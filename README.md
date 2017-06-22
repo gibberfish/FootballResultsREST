@@ -7,13 +7,13 @@ mvn clean spring-boot:run
 
 ## To access the swagger documentation
 ```
-http://localhost:8090/swagger-ui.html
+http://localhost:1980/swagger-ui.html
 ```
 
 ## Test using Postman
 e.g.
 ```
-GET http://localhost:8090/division?id=1
+GET http://localhost:1980/division?id=1
 ```
 
 Should return:
@@ -22,4 +22,4 @@ Should return:
   "id": "1",
   "divisionName": "Championship"
 }
-``` 
+```

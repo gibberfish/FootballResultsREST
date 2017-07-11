@@ -15,11 +15,6 @@ public class KatharsisDivision {
 		this.division = division;
 	}
 
-//	public KatharsisDivision (String id, String divisionName) {
-//		this.id = id;
-//		this.divisionName = divisionName;
-//	}
-	
 	@JsonProperty("divisionName")	
 	public String getDivisionName() {
 		return division.getDivisionName();
@@ -34,5 +29,15 @@ public class KatharsisDivision {
 	}
 	public void setId(String id) {
 		division.setDivisionId(id);
+	}
+
+	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	public Division getDivision() {
+		return division;
+	}
+
+	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	public void setDivision(Division division) {
+		this.division = division;
 	}
 }

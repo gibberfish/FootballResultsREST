@@ -8,27 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.katharsis.resource.registry.RegistryEntry;
 import io.katharsis.resource.registry.ResourceRegistry;
-import io.katharsis.spring.boot.KatharsisConfigV2;
-
+import io.katharsis.spring.boot.v3.KatharsisConfigV3;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @RestController
 @SpringBootApplication(scanBasePackages="**/mindbadger/**/*")
-@EnableSwagger2
-//@ComponentScan("mindbadger.football.api")
-@Import(KatharsisConfigV2.class)
+@Import({KatharsisConfigV3.class})
 public class Application {
 
 	/*
@@ -38,15 +34,17 @@ public class Application {
     @Autowired
     private ResourceRegistry resourceRegistry;
 	
-    @RequestMapping("/resourcesInfo")
+    @RequestMapping("/resources-info")
     public Map<?, ?> getResources() {
         Map<String, String> result = new HashMap<>();
         // Add all resources (i.e. Project and Task)
-        for (Class<?> clazz : resourceRegistry.getResources().keySet()) {
-           result.put(resourceRegistry.getResourceType(clazz), resourceRegistry.getResourceUrl(clazz));
+        for (RegistryEntry entry : resourceRegistry.getResources()) {
+            result.put(entry.getResourceInformation().getResourceType(),
+                resourceRegistry.getResourceUrl(entry.getResourceInformation()));
         }
         return result;
     }
+    
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

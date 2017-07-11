@@ -15,7 +15,7 @@
     <properties>
     	<main.basedir>${basedir}/../..</main.basedir>
         <java.version>1.8</java.version>
-        <katharsis-version>2.4.0</katharsis-version>
+        <katharsis-version>3.0.2</katharsis-version>
         <reflections.version>0.9.9</reflections.version>
         <spring.version>4.3.6.RELEASE</spring.version>
     </properties>

@@ -15,14 +15,14 @@
     <properties>
     	<main.basedir>${basedir}/../..</main.basedir>
         <java.version>1.8</java.version>
-        <katharsis-version>3.0.2</katharsis-version>
+        <crnk-version>2.0.20170925075826</crnk-version>
         <reflections.version>0.9.9</reflections.version>
         <spring.version>4.3.6.RELEASE</spring.version>
     </properties>
     <dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>mindbadger</groupId>
@@ -67,7 +67,19 @@
 					<artifactId>hibernate-entitymanager</artifactId>
 					<groupId>org.hibernate</groupId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
@@ -80,9 +92,24 @@
 			<version>5.1.10</version>
 		</dependency>
 		<dependency>
-		  <groupId>io.katharsis</groupId>
-		  <artifactId>katharsis-spring</artifactId>
-		  <version>${katharsis-version}</version>
+			<groupId>io.crnk</groupId>
+			<artifactId>crnk-core</artifactId>
+			<version>${crnk-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.crnk</groupId>
+			<artifactId>crnk-client</artifactId>
+			<version>${crnk-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.crnk</groupId>
+			<artifactId>crnk-spring</artifactId>
+			<version>${crnk-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.crnk</groupId>
+			<artifactId>crnk-brave</artifactId>
+			<version>${crnk-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>

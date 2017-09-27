@@ -4,6 +4,9 @@ package mindbadger;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.crnk.core.engine.registry.RegistryEntry;
+import io.crnk.core.engine.registry.ResourceRegistry;
+import io.crnk.spring.boot.v3.CrnkConfigV3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +16,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.katharsis.resource.registry.RegistryEntry;
-import io.katharsis.resource.registry.ResourceRegistry;
-import io.katharsis.spring.boot.v3.KatharsisConfigV3;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -24,7 +24,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 @RestController
 @SpringBootApplication(scanBasePackages="**/mindbadger/**/*")
-@Import({KatharsisConfigV3.class})
+@Import({CrnkConfigV3.class})
 public class Application {
 
 	/*

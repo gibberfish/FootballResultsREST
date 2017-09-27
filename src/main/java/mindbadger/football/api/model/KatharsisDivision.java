@@ -1,9 +1,10 @@
 package mindbadger.football.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.katharsis.resource.annotations.JsonApiId;
-import io.katharsis.resource.annotations.JsonApiResource;
+import io.crnk.core.resource.annotations.JsonApiId;
+import io.crnk.core.resource.annotations.JsonApiResource;
 import mindbadger.football.domain.Division;
 
 @JsonApiResource(type = "divisions")
@@ -32,12 +33,10 @@ public class KatharsisDivision {
 	}
 
 	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
-	public Division getDivision() {
-		return division;
-	}
+	@JsonIgnore
+	public Division getDivision() {	return division; }
 
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
-	public void setDivision(Division division) {
-		this.division = division;
-	}
+	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!
+	@JsonIgnore
+	public void setDivision(Division division) {	this.division = division;	}
 }

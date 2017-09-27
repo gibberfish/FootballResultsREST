@@ -1,8 +1,8 @@
 package mindbadger.football.api.repository;
 
-import io.katharsis.queryspec.QuerySpec;
-import io.katharsis.repository.ResourceRepositoryBase;
-import io.katharsis.resource.list.ResourceList;
+import io.crnk.core.queryspec.QuerySpec;
+import io.crnk.core.repository.ResourceRepositoryBase;
+import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.KatharsisDivision;
 import mindbadger.football.api.model.KatharsisSeason;
 import mindbadger.football.domain.Division;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Validated
 public class KatharsisSeasonRepository extends ResourceRepositoryBase<KatharsisSeason, String> {
 
 	protected KatharsisSeasonRepository() {

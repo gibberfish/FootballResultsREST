@@ -1,17 +1,16 @@
 package mindbadger.football.api.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.crnk.core.resource.annotations.JsonApiId;
 import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToMany;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @JsonApiResource(type = "seasons")
 public class KatharsisSeason {
@@ -38,11 +37,11 @@ public class KatharsisSeason {
 		season.setSeasonNumber(id);
 	}
 
-	@JsonApiToMany(opposite = "seasonDivisions")
+	@JsonApiToMany(opposite = "seasons")
 	public Set<KatharsisSeasonDivision> getSeasonDivisions () {
 		Set<KatharsisSeasonDivision> seasonDivisions = new HashSet<KatharsisSeasonDivision>();
 
-		//TODO make this code more consise with streams
+		//TODO make this code more concise with streams
         for (SeasonDivision seasonDivision : season.getSeasonDivisions() ) {
             seasonDivisions.add(new KatharsisSeasonDivision(seasonDivision));
         }

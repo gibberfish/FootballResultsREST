@@ -1,20 +1,17 @@
 package mindbadger.football.api.repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisDivision;
 import mindbadger.football.api.model.KatharsisSeason;
-import mindbadger.football.domain.Division;
 import mindbadger.football.domain.Season;
-import mindbadger.football.repository.DivisionRepository;
 import mindbadger.football.repository.SeasonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class KatharsisSeasonRepositoryImpl extends ResourceRepositoryBase<KatharsisSeason, Integer> 
@@ -35,7 +32,6 @@ public class KatharsisSeasonRepositoryImpl extends ResourceRepositoryBase<Kathar
     	for (Season season : seasons) {
     		katharsisSeasons.add(new KatharsisSeason(season));
     	}
-		
 		
 		return querySpec.apply(katharsisSeasons);
 	}

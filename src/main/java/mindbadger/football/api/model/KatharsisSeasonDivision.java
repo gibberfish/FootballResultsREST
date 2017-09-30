@@ -13,6 +13,7 @@ import io.crnk.core.resource.annotations.JsonApiToOne;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.domain.SeasonDivisionTeam;
 
+@SuppressWarnings("deprecation")
 @JsonApiResource(type = "seasonDivisions")
 public class KatharsisSeasonDivision {
 

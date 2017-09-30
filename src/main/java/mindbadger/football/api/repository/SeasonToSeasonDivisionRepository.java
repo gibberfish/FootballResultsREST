@@ -1,20 +1,13 @@
 package mindbadger.football.api.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisDivision;
 import mindbadger.football.api.model.KatharsisSeason;
 import mindbadger.football.api.model.KatharsisSeasonDivision;
-import mindbadger.football.domain.Season;
-import mindbadger.football.domain.SeasonDivision;
-import mindbadger.football.repository.SeasonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase<KatharsisSeason, Integer, KatharsisSeasonDivision, String> {
@@ -29,7 +22,7 @@ public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase
 
     @Override
     public KatharsisSeasonDivision findOneTarget(Integer sourceId, String fieldName, QuerySpec querySpec) {
-        throw new NotImplementedException();
+        throw new RuntimeException();
     }
 
     @Override

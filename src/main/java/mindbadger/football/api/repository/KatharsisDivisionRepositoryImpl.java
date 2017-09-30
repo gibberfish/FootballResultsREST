@@ -3,13 +3,12 @@ package mindbadger.football.api.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
-
 import mindbadger.football.api.model.KatharsisDivision;
 import mindbadger.football.domain.Division;
 import mindbadger.football.repository.DivisionRepository;
@@ -33,7 +32,6 @@ public class KatharsisDivisionRepositoryImpl extends ResourceRepositoryBase<Kath
     	for (Division division : divisions) {
     		katharsisDivisions.add(new KatharsisDivision(division));
     	}
-		
 		
 		return querySpec.apply(katharsisDivisions);
 	}

@@ -9,7 +9,6 @@ import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.KatharsisSeason;
 import mindbadger.football.api.model.KatharsisSeasonDivision;
 import mindbadger.football.api.model.KatharsisTeam;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 @Component
 public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<KatharsisSeasonDivision, String, KatharsisTeam, String> {
@@ -24,15 +23,19 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<K
 
     @Override
     public KatharsisTeam findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
-        throw new NotImplementedException();
+        throw new IllegalArgumentException();
     }
 
     @Override
     public ResourceList<KatharsisTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
     	KatharsisSeason season = seasonRepository.findOne(parseSeasonIdFromSourceId(sourceId), querySpec);
     	
+    	System.out.println("***** DEBUG: Number of season divisions = " + season.getSeasonDivisions().size());
+    	
     	for (KatharsisSeasonDivision seasonDivision : season.getSeasonDivisions() ) {
     		if (sourceId.equals(seasonDivision.getId())) {
+    			System.out.println("***** DEBUG: Number of season divisions = " + seasonDivision.getTeams().size());
+    			
     			return querySpec.apply(seasonDivision.getTeams());
     		}
     	}

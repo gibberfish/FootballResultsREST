@@ -1,7 +1,5 @@
 package mindbadger.football.api.repository;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +13,6 @@ import mindbadger.football.api.model.KatharsisSeasonDivision;
 public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase<KatharsisSeasonDivision, String, KatharsisSeason, Integer> {
 
     private KatharsisSeasonRepository seasonRepository;
-
-//    public SeasonDivisionToSeasonRepository() {
-//        super (KatharsisSeasonDivision.class, KatharsisSeason.class);
-//    }
 
     @Autowired
     public SeasonDivisionToSeasonRepository (KatharsisSeasonRepository seasonRepository) {

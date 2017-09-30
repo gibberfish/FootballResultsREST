@@ -34,7 +34,8 @@ public class Application {
     @Autowired
     private ResourceRegistry resourceRegistry;
 	
-    @RequestMapping("/resources-info")
+    @SuppressWarnings("deprecation")
+	@RequestMapping("/resources-info")
     public Map<?, ?> getResources() {
         Map<String, String> result = new HashMap<>();
         // Add all resources (i.e. Project and Task)

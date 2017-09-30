@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
@@ -33,7 +32,6 @@ public class KatharsisTeamRepositoryImpl extends ResourceRepositoryBase<Katharsi
     	for (Team team : teams) {
     		katharsisTeams.add(new KatharsisTeam(team));
     	}
-		
 		
 		return querySpec.apply(katharsisTeams);
 	}

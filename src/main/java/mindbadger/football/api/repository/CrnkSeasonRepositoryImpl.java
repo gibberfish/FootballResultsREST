@@ -9,28 +9,28 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisSeason;
+import mindbadger.football.api.model.CrnkSeason;
 import mindbadger.football.domain.Season;
 import mindbadger.football.repository.SeasonRepository;
 
 @Component
-public class KatharsisSeasonRepositoryImpl extends ResourceRepositoryBase<KatharsisSeason, Integer> 
-	implements KatharsisSeasonRepository {
+public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason, Integer> 
+	implements CrnkSeasonRepository {
 
-	protected KatharsisSeasonRepositoryImpl() {
-		super(KatharsisSeason.class);
+	protected CrnkSeasonRepositoryImpl() {
+		super(CrnkSeason.class);
 	}
 
 	@Autowired
 	private SeasonRepository seasonRepository;
 
 	@Override
-	public synchronized ResourceList<KatharsisSeason> findAll(QuerySpec querySpec) {
+	public synchronized ResourceList<CrnkSeason> findAll(QuerySpec querySpec) {
 		Iterable<Season> seasons = seasonRepository.findAll();
 		
-    	List<KatharsisSeason> katharsisSeasons = new ArrayList<KatharsisSeason> ();
+    	List<CrnkSeason> katharsisSeasons = new ArrayList<CrnkSeason> ();
     	for (Season season : seasons) {
-    		katharsisSeasons.add(new KatharsisSeason(season));
+    		katharsisSeasons.add(new CrnkSeason(season));
     	}
 		
 		return querySpec.apply(katharsisSeasons);

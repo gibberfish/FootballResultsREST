@@ -15,27 +15,27 @@ import mindbadger.football.domain.SeasonDivisionTeam;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "seasonDivisions")
-public class KatharsisSeasonDivision {
+public class CrnkSeasonDivision {
 
 	private SeasonDivision seasonDivision;
 	private String id;
 
-	public KatharsisSeasonDivision(SeasonDivision seasonDivision) {
+	public CrnkSeasonDivision(SeasonDivision seasonDivision) {
 		this.seasonDivision = seasonDivision;
 		this.id = seasonDivision.getSeason().getSeasonNumber() + "-" + seasonDivision.getDivision().getDivisionId();
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisions")
-	public KatharsisSeason getSeason() {
-		return new KatharsisSeason(seasonDivision.getSeason());
+	public CrnkSeason getSeason() {
+		return new CrnkSeason(seasonDivision.getSeason());
 	}
-	public void setSeason(KatharsisSeason season) {
+	public void setSeason(CrnkSeason season) {
 		this.seasonDivision.setSeason(season.getSeason());
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisions")
-	public KatharsisDivision getDivision() { return new KatharsisDivision(seasonDivision.getDivision()); }
-	public void setDivision (KatharsisDivision division) {
+	public CrnkDivision getDivision() { return new CrnkDivision(seasonDivision.getDivision()); }
+	public void setDivision (CrnkDivision division) {
 		this.seasonDivision.setDivision(division.getDivision());
 	}
 
@@ -48,12 +48,12 @@ public class KatharsisSeasonDivision {
 	}
 
 	@JsonApiToMany(opposite = "team")
-	public Set<KatharsisTeam> getTeams () {
-		Set<KatharsisTeam> teams = new HashSet<KatharsisTeam> ();
+	public Set<CrnkTeam> getTeams () {
+		Set<CrnkTeam> teams = new HashSet<CrnkTeam> ();
 		
 		//TODO make this code more concise with streams
 		for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
-			teams.add(new KatharsisTeam(seasonDivisionTeam.getTeam()));
+			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
 		}
 		
 		return teams;

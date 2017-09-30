@@ -6,30 +6,30 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisSeason;
-import mindbadger.football.api.model.KatharsisSeasonDivision;
+import mindbadger.football.api.model.CrnkSeason;
+import mindbadger.football.api.model.CrnkSeasonDivision;
 
 @Component
-public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase<KatharsisSeasonDivision, String, KatharsisSeason, Integer> {
+public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeason, Integer> {
 
-    private KatharsisSeasonRepository seasonRepository;
+    private CrnkSeasonRepository seasonRepository;
 
     @Autowired
-    public SeasonDivisionToSeasonRepository (KatharsisSeasonRepository seasonRepository) {
-    	super (KatharsisSeasonDivision.class, KatharsisSeason.class);
+    public SeasonDivisionToSeasonRepository (CrnkSeasonRepository seasonRepository) {
+    	super (CrnkSeasonDivision.class, CrnkSeason.class);
     	this.seasonRepository = seasonRepository;
     }
     
     @Override
-    public KatharsisSeason findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
+    public CrnkSeason findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
     	return seasonRepository.findOne(parseSeasonIdFromSourceId(sourceId), querySpec);
     }
 
     @SuppressWarnings("unchecked")
 	@Override
-    public ResourceList<KatharsisSeason> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-    	KatharsisSeason season = findOneTarget(sourceId, fieldName, querySpec);
-    	return querySpec.apply((Iterable<KatharsisSeason>) season);
+    public ResourceList<CrnkSeason> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
+    	CrnkSeason season = findOneTarget(sourceId, fieldName, querySpec);
+    	return querySpec.apply((Iterable<CrnkSeason>) season);
     }
     
     private Integer parseSeasonIdFromSourceId (String sourceId) {
@@ -38,22 +38,22 @@ public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase
     }
     
     @Override
-    protected KatharsisSeason getTarget(Integer targetId) {
+    protected CrnkSeason getTarget(Integer targetId) {
         return super.getTarget(targetId);
     }
 
     @Override
-    protected Iterable<KatharsisSeason> getTargets(Iterable<Integer> targetIds) {
+    protected Iterable<CrnkSeason> getTargets(Iterable<Integer> targetIds) {
         return super.getTargets(targetIds);
     }
 
     @Override
-    public Class<KatharsisSeasonDivision> getSourceResourceClass() {
-        return KatharsisSeasonDivision.class;
+    public Class<CrnkSeasonDivision> getSourceResourceClass() {
+        return CrnkSeasonDivision.class;
     }
 
     @Override
-    public Class<KatharsisSeason> getTargetResourceClass() {
-        return KatharsisSeason.class;
+    public Class<CrnkSeason> getTargetResourceClass() {
+        return CrnkSeason.class;
     }
 }

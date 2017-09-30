@@ -14,11 +14,11 @@ import mindbadger.football.domain.SeasonDivision;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "seasons")
-public class KatharsisSeason {
+public class CrnkSeason {
 
 	private Season season;
 
-	public KatharsisSeason(Season season) {
+	public CrnkSeason(Season season) {
 		this.season = season;
 	}
 
@@ -39,25 +39,25 @@ public class KatharsisSeason {
 	}
 
 	@JsonApiToMany(opposite = "seasons")
-	public Set<KatharsisSeasonDivision> getSeasonDivisions () {
-		Set<KatharsisSeasonDivision> seasonDivisions = new HashSet<KatharsisSeasonDivision>();
+	public Set<CrnkSeasonDivision> getSeasonDivisions () {
+		Set<CrnkSeasonDivision> seasonDivisions = new HashSet<CrnkSeasonDivision>();
 
 		//TODO make this code more concise with streams
         for (SeasonDivision seasonDivision : season.getSeasonDivisions() ) {
-            seasonDivisions.add(new KatharsisSeasonDivision(seasonDivision));
+            seasonDivisions.add(new CrnkSeasonDivision(seasonDivision));
         }
 
         return seasonDivisions;
 	}
 
     @JsonIgnore
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	public Season getSeason() {
 		return season;
 	}
 
     @JsonIgnore
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	public void setSeason(Season season) {
 		this.season = season;
 	}

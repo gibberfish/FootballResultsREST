@@ -6,30 +6,30 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisDivision;
-import mindbadger.football.api.model.KatharsisSeasonDivision;
+import mindbadger.football.api.model.CrnkDivision;
+import mindbadger.football.api.model.CrnkSeasonDivision;
 
 @Component
-public class SeasonDivisionToDivisionRepository extends RelationshipRepositoryBase<KatharsisSeasonDivision, String, KatharsisDivision, String> {
+public class SeasonDivisionToDivisionRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkDivision, String> {
 
-    private KatharsisDivisionRepository divisionRepository;
+    private CrnkDivisionRepository divisionRepository;
 
     @Autowired
-    public SeasonDivisionToDivisionRepository (KatharsisDivisionRepository divisionRepository) {
-    	super (KatharsisSeasonDivision.class, KatharsisDivision.class);
+    public SeasonDivisionToDivisionRepository (CrnkDivisionRepository divisionRepository) {
+    	super (CrnkSeasonDivision.class, CrnkDivision.class);
     	this.divisionRepository = divisionRepository;
     }
     
     @Override
-    public KatharsisDivision findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
+    public CrnkDivision findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
     	return divisionRepository.findOne(parseDivisionIdFromSourceId(sourceId), querySpec);
     }
 
     @SuppressWarnings("unchecked")
 	@Override
-    public ResourceList<KatharsisDivision> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-    	KatharsisDivision division = findOneTarget(sourceId, fieldName, querySpec);
-    	return querySpec.apply((Iterable<KatharsisDivision>) division);
+    public ResourceList<CrnkDivision> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
+    	CrnkDivision division = findOneTarget(sourceId, fieldName, querySpec);
+    	return querySpec.apply((Iterable<CrnkDivision>) division);
     }
 
     private String parseDivisionIdFromSourceId (String sourceId) {
@@ -38,22 +38,22 @@ public class SeasonDivisionToDivisionRepository extends RelationshipRepositoryBa
     }
     
     @Override
-    protected KatharsisDivision getTarget(String targetId) {
+    protected CrnkDivision getTarget(String targetId) {
         return super.getTarget(targetId);
     }
 
     @Override
-    protected Iterable<KatharsisDivision> getTargets(Iterable<String> targetIds) {
+    protected Iterable<CrnkDivision> getTargets(Iterable<String> targetIds) {
         return super.getTargets(targetIds);
     }
 
     @Override
-    public Class<KatharsisSeasonDivision> getSourceResourceClass() {
-        return KatharsisSeasonDivision.class;
+    public Class<CrnkSeasonDivision> getSourceResourceClass() {
+        return CrnkSeasonDivision.class;
     }
 
     @Override
-    public Class<KatharsisDivision> getTargetResourceClass() {
-        return KatharsisDivision.class;
+    public Class<CrnkDivision> getTargetResourceClass() {
+        return CrnkDivision.class;
     }
 }

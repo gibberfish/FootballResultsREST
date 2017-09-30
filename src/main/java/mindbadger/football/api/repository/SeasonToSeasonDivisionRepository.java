@@ -6,49 +6,49 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisSeason;
-import mindbadger.football.api.model.KatharsisSeasonDivision;
+import mindbadger.football.api.model.CrnkSeason;
+import mindbadger.football.api.model.CrnkSeasonDivision;
 
 @Component
-public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase<KatharsisSeason, Integer, KatharsisSeasonDivision, String> {
+public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase<CrnkSeason, Integer, CrnkSeasonDivision, String> {
 
-    private KatharsisSeasonRepository seasonRepository;
+    private CrnkSeasonRepository seasonRepository;
 
     @Autowired
-    public SeasonToSeasonDivisionRepository(KatharsisSeasonRepository seasonRepository) {
-        super (KatharsisSeason.class, KatharsisSeasonDivision.class);
+    public SeasonToSeasonDivisionRepository(CrnkSeasonRepository seasonRepository) {
+        super (CrnkSeason.class, CrnkSeasonDivision.class);
         this.seasonRepository = seasonRepository;
     }
 
     @Override
-    public KatharsisSeasonDivision findOneTarget(Integer sourceId, String fieldName, QuerySpec querySpec) {
+    public CrnkSeasonDivision findOneTarget(Integer sourceId, String fieldName, QuerySpec querySpec) {
         throw new RuntimeException();
     }
 
     @Override
-    public ResourceList<KatharsisSeasonDivision> findManyTargets(Integer sourceId, String fieldName, QuerySpec querySpec) {
-        KatharsisSeason season = seasonRepository.findOne(sourceId, querySpec);
-        Iterable<KatharsisSeasonDivision> seasonDivisions = season.getSeasonDivisions();
+    public ResourceList<CrnkSeasonDivision> findManyTargets(Integer sourceId, String fieldName, QuerySpec querySpec) {
+        CrnkSeason season = seasonRepository.findOne(sourceId, querySpec);
+        Iterable<CrnkSeasonDivision> seasonDivisions = season.getSeasonDivisions();
         return querySpec.apply(seasonDivisions);
     }
 
     @Override
-    protected KatharsisSeasonDivision getTarget(String targetId) {
+    protected CrnkSeasonDivision getTarget(String targetId) {
         return super.getTarget(targetId);
     }
 
     @Override
-    protected Iterable<KatharsisSeasonDivision> getTargets(Iterable<String> targetIds) {
+    protected Iterable<CrnkSeasonDivision> getTargets(Iterable<String> targetIds) {
         return super.getTargets(targetIds);
     }
 
     @Override
-    public Class<KatharsisSeason> getSourceResourceClass() {
-        return KatharsisSeason.class;
+    public Class<CrnkSeason> getSourceResourceClass() {
+        return CrnkSeason.class;
     }
 
     @Override
-    public Class<KatharsisSeasonDivision> getTargetResourceClass() {
-        return KatharsisSeasonDivision.class;
+    public Class<CrnkSeasonDivision> getTargetResourceClass() {
+        return CrnkSeasonDivision.class;
     }
 }

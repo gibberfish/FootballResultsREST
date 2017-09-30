@@ -8,10 +8,10 @@ import io.crnk.core.resource.annotations.JsonApiResource;
 import mindbadger.football.domain.Team;
 
 @JsonApiResource(type = "teams")
-public class KatharsisTeam {
+public class CrnkTeam {
 	private Team team;
 	
-	public KatharsisTeam (Team team) {
+	public CrnkTeam (Team team) {
 		this.team = team;
 	}
 
@@ -31,11 +31,11 @@ public class KatharsisTeam {
 		team.setTeamId(id);
 	}
 
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	@JsonIgnore
 	public Team getTeam() {	return team; }
 
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!
 	@JsonIgnore
 	public void setTeam(Team team) {	this.team = team;	}
 }

@@ -9,28 +9,28 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.KatharsisDivision;
+import mindbadger.football.api.model.CrnkDivision;
 import mindbadger.football.domain.Division;
 import mindbadger.football.repository.DivisionRepository;
 
 @Component
-public class KatharsisDivisionRepositoryImpl extends ResourceRepositoryBase<KatharsisDivision, String>
-	implements KatharsisDivisionRepository {
+public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivision, String>
+	implements CrnkDivisionRepository {
 	
-	protected KatharsisDivisionRepositoryImpl() {
-		super(KatharsisDivision.class);
+	protected CrnkDivisionRepositoryImpl() {
+		super(CrnkDivision.class);
 	}
 
 	@Autowired
 	private DivisionRepository divisionRepository;
 
 	@Override
-	public synchronized ResourceList<KatharsisDivision> findAll(QuerySpec querySpec) {
+	public synchronized ResourceList<CrnkDivision> findAll(QuerySpec querySpec) {
 		Iterable<Division> divisions = divisionRepository.findAll();
 		
-    	List<KatharsisDivision> katharsisDivisions = new ArrayList<KatharsisDivision> ();
+    	List<CrnkDivision> katharsisDivisions = new ArrayList<CrnkDivision> ();
     	for (Division division : divisions) {
-    		katharsisDivisions.add(new KatharsisDivision(division));
+    		katharsisDivisions.add(new CrnkDivision(division));
     	}
 		
 		return querySpec.apply(katharsisDivisions);

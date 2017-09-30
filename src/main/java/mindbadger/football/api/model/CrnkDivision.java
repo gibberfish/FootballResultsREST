@@ -8,11 +8,11 @@ import io.crnk.core.resource.annotations.JsonApiResource;
 import mindbadger.football.domain.Division;
 
 @JsonApiResource(type = "divisions")
-public class KatharsisDivision {
+public class CrnkDivision {
 	
 	private Division division;
 	
-	public KatharsisDivision (Division division) {
+	public CrnkDivision (Division division) {
 		this.division = division;
 	}
 
@@ -32,11 +32,11 @@ public class KatharsisDivision {
 		division.setDivisionId(id);
 	}
 
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	@JsonIgnore
 	public Division getDivision() {	return division; }
 
-	//TODO Even though we don't want to expose this directly, Katharsis requires this to work!!
+	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!
 	@JsonIgnore
 	public void setDivision(Division division) {	this.division = division;	}
 }

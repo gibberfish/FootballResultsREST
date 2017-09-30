@@ -1,51 +1,42 @@
 package mindbadger.football.api.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.KatharsisDivision;
-import mindbadger.football.api.model.KatharsisSeason;
 import mindbadger.football.api.model.KatharsisSeasonDivision;
-import mindbadger.football.api.model.KatharsisTeam;
-import mindbadger.football.domain.Season;
-import mindbadger.football.domain.SeasonDivision;
-import mindbadger.football.repository.SeasonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeasonDivisionToDivisionRepository extends RelationshipRepositoryBase<KatharsisSeasonDivision, String, KatharsisDivision, String> {
 
+    private KatharsisDivisionRepository divisionRepository;
+
     @Autowired
-    private SeasonRepository seasonRepository;
-
-    public SeasonDivisionToDivisionRepository() {
-        super (KatharsisSeasonDivision.class, KatharsisDivision.class);
+    public SeasonDivisionToDivisionRepository (KatharsisDivisionRepository divisionRepository) {
+    	super (KatharsisSeasonDivision.class, KatharsisDivision.class);
+    	this.divisionRepository = divisionRepository;
     }
-
+    
     @Override
     public KatharsisDivision findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
-        throw new NotImplementedException();
+    	return divisionRepository.findOne(parseDivisionIdFromSourceId(sourceId), querySpec);
     }
 
-//    @Override
-//    public ResourceList<KatharsisTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-//        //Season season = seasonRepository.findOne(sourceId);
-//        //Iterable<Team> teams = season.getSeasonDivisions();
-//
-//        List<KatharsisSeasonDivision> katharsisSeasonDivisions = new ArrayList<KatharsisSeasonDivision>();
-//
-//        for (SeasonDivision seasonDivision : seasonDivisions) {
-//            katharsisSeasonDivisions.add(new KatharsisSeasonDivision(seasonDivision));
-//        }
-//
-//        return querySpec.apply(katharsisSeasonDivisions);
-//    }
+    @SuppressWarnings("unchecked")
+	@Override
+    public ResourceList<KatharsisDivision> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
+    	KatharsisDivision division = findOneTarget(sourceId, fieldName, querySpec);
+    	return querySpec.apply((Iterable<KatharsisDivision>) division);
+    }
 
+    private String parseDivisionIdFromSourceId (String sourceId) {
+    	String[] idSplit = sourceId.split("-");
+    	return idSplit[1];
+    }
+    
     @Override
     protected KatharsisDivision getTarget(String targetId) {
         return super.getTarget(targetId);

@@ -19,11 +19,12 @@ import java.util.List;
 @Component
 public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase<KatharsisSeason, Integer, KatharsisSeasonDivision, String> {
 
-    @Autowired
-    private SeasonRepository seasonRepository;
+    private KatharsisSeasonRepository seasonRepository;
 
-    public SeasonToSeasonDivisionRepository() {
+    @Autowired
+    public SeasonToSeasonDivisionRepository(KatharsisSeasonRepository seasonRepository) {
         super (KatharsisSeason.class, KatharsisSeasonDivision.class);
+        this.seasonRepository = seasonRepository;
     }
 
     @Override
@@ -33,16 +34,9 @@ public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase
 
     @Override
     public ResourceList<KatharsisSeasonDivision> findManyTargets(Integer sourceId, String fieldName, QuerySpec querySpec) {
-        Season season = seasonRepository.findOne(sourceId);
-        Iterable<SeasonDivision> seasonDivisions = season.getSeasonDivisions();
-
-        List<KatharsisSeasonDivision> katharsisSeasonDivisions = new ArrayList<KatharsisSeasonDivision>();
-
-        for (SeasonDivision seasonDivision : seasonDivisions) {
-            katharsisSeasonDivisions.add(new KatharsisSeasonDivision(seasonDivision));
-        }
-
-        return querySpec.apply(katharsisSeasonDivisions);
+        KatharsisSeason season = seasonRepository.findOne(sourceId, querySpec);
+        Iterable<KatharsisSeasonDivision> seasonDivisions = season.getSeasonDivisions();
+        return querySpec.apply(seasonDivisions);
     }
 
     @Override

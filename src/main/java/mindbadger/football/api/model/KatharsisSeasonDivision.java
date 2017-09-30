@@ -3,6 +3,7 @@ package mindbadger.football.api.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.crnk.core.resource.annotations.JsonApiId;
@@ -16,9 +17,11 @@ import mindbadger.football.domain.SeasonDivisionTeam;
 public class KatharsisSeasonDivision {
 
 	private SeasonDivision seasonDivision;
+	private String id;
 
 	public KatharsisSeasonDivision(SeasonDivision seasonDivision) {
 		this.seasonDivision = seasonDivision;
+		this.id = seasonDivision.getSeason().getSeasonNumber() + "-" + seasonDivision.getDivision().getDivisionId();
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisions")
@@ -57,7 +60,19 @@ public class KatharsisSeasonDivision {
 
 	@JsonApiId
 	public String getId() {
-		//return seasonDivision.toString();
-		return seasonDivision.getSeason().getSeasonNumber() + '-' + seasonDivision.getDivision().getDivisionId();
+		return this.id;
+	}
+	public void setId() {
+		throw new IllegalAccessError("Please set only as part of constructor");
+	}
+	
+	@JsonIgnore
+	private SeasonDivision getSeasonDivision() {
+		return seasonDivision;
+	}
+
+	@JsonIgnore
+	private void setSeasonDivision(SeasonDivision seasonDivision) {
+		this.seasonDivision = seasonDivision;
 	}
 }

@@ -59,6 +59,12 @@ public class CrnkSeasonDivision {
 		return teams;
 	}
 
+	@JsonApiToMany(opposite = "fixture")
+	public Set<CrnkFixture> getFixtures () {
+		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
+		return fixtures;
+	}
+	
 	@JsonApiId
 	public String getId() {
 		return this.id;
@@ -68,7 +74,7 @@ public class CrnkSeasonDivision {
 	}
 	
 	@JsonIgnore
-	private SeasonDivision getSeasonDivision() {
+	public SeasonDivision getSeasonDivision() {
 		return seasonDivision;
 	}
 

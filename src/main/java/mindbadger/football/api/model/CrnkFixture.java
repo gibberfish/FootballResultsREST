@@ -1,6 +1,9 @@
 package mindbadger.football.api.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +18,7 @@ import mindbadger.football.domain.Team;
 @JsonApiResource(type = "fixtures")
 public class CrnkFixture {
 	private Fixture fixture;
+	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public CrnkFixture (Fixture fixture) {
 		this.fixture = fixture;
@@ -45,11 +49,15 @@ public class CrnkFixture {
 	}
 
 	@JsonProperty("fixtureDate")
-	public Calendar getFixtureDate() {
-		return fixture.getFixtureDate();
+	public String getFixtureDate() {
+		Calendar fixtureDate = fixture.getFixtureDate();
+		return sdf.format(fixtureDate.getTime());
 	}
-	public void setFixtureDate(Calendar fixtureDate) {
-		fixture.setFixtureDate(fixtureDate);
+	public void setFixtureDate(String fixtureDate) throws ParseException {
+		Date fixtureDateDate = sdf.parse(fixtureDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(fixtureDateDate);
+		fixture.setFixtureDate(cal);
 	}
 
 	@JsonProperty("homeTeam")

@@ -51,10 +51,10 @@ public class CrnkSeasonDivision {
 	public Set<CrnkTeam> getTeams () {
 		Set<CrnkTeam> teams = new HashSet<CrnkTeam> ();
 		
-		//TODO make this code more concise with streams
-		for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
-			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
-		}
+//		//TODO make this code more concise with streams
+//		for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
+//			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
+//		}
 		
 		return teams;
 	}
@@ -64,7 +64,13 @@ public class CrnkSeasonDivision {
 		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
 		return fixtures;
 	}
-	
+
+	@JsonApiToMany(opposite = "fixtureDate")
+	public Set<CrnkFixtureDate> getFixtureDates () {
+		Set<CrnkFixtureDate> fixtureDates = new HashSet<CrnkFixtureDate>();
+		return fixtureDates;
+	}
+
 	@JsonApiId
 	public String getId() {
 		return this.id;

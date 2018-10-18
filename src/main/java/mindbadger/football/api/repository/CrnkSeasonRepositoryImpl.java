@@ -3,6 +3,8 @@ package mindbadger.football.api.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.crnk.core.engine.registry.ResourceRegistry;
+import mindbadger.football.domain.DomainObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,9 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	}
 
 	@Autowired
+	private DomainObjectFactory domainObjectFactory;
+
+	@Autowired
 	private SeasonRepository seasonRepository;
 
 	@Override
@@ -34,5 +39,32 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
     	}
 		
 		return querySpec.apply(katharsisSeasons);
+	}
+
+	@Override
+	public <S extends CrnkSeason> S save(S resource) {
+		Season newSeason = domainObjectFactory.createSeason(resource.getId());
+		seasonRepository.save(newSeason);
+		return resource;
+	}
+
+	@Override
+	public <S extends CrnkSeason> S create(S resource) {
+		return save(resource);
+	}
+
+	@Override
+	public CrnkSeason findOne(Integer id, QuerySpec querySpec) {
+		return super.findOne(id, querySpec);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		super.delete(id);
+	}
+
+	@Override
+	public void setResourceRegistry(ResourceRegistry resourceRegistry) {
+		super.setResourceRegistry(resourceRegistry);
 	}
 }

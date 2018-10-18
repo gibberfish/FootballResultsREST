@@ -11,12 +11,17 @@ import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToMany;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
+import mindbadger.football.domain.SeasonImpl;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "seasons")
 public class CrnkSeason {
 
 	private Season season;
+
+	public CrnkSeason() {
+		this.season = new SeasonImpl();
+	}
 
 	public CrnkSeason(Season season) {
 		this.season = season;

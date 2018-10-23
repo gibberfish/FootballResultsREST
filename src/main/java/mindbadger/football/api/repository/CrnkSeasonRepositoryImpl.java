@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.crnk.core.engine.registry.ResourceRegistry;
+import io.crnk.core.exception.BadRequestException;
 import mindbadger.football.domain.DomainObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,9 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 
 	@Override
 	public <S extends CrnkSeason> S create(S resource) {
+		if (seasonRepository.findOne(resource.getId()) != null) {
+			throw new BadRequestException("Season already exists");
+		}
 		return save(resource);
 	}
 

@@ -10,7 +10,7 @@ import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver
 @Configuration
 @ComponentScan (lazyInit = true, basePackages = "mindbadger")
 @EnableAutoConfiguration
-@ImportResource("classpath:spring-config.xml")
+//@ImportResource("classpath:spring-config.xml")
 public class ApiConfiguration {
 	public ApiConfiguration () {
 	}

@@ -30,11 +30,6 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>mindbadger</groupId>
-			<artifactId>football-results-analyser</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20151123</version>

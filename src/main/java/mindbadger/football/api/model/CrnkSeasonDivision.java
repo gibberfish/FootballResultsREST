@@ -50,12 +50,11 @@ public class CrnkSeasonDivision {
 	@JsonApiToMany(opposite = "team")
 	public Set<CrnkTeam> getTeams () {
 		Set<CrnkTeam> teams = new HashSet<CrnkTeam> ();
-		
-//		//TODO make this code more concise with streams
-//		for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
-//			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
-//		}
-		
+
+		seasonDivision.getSeasonDivisionTeams().stream().forEach(seasonDivisionTeam -> {
+			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
+		});
+
 		return teams;
 	}
 

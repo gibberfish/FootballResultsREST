@@ -45,6 +45,7 @@ public class CrnkFixtureDate {
 	@JsonApiToMany(opposite = "fixture")
 	public Set<CrnkFixture> getFixtures () {
 		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
+		System.out.println("CrnkFixtureDate.getFixtures() called.");
 		return fixtures;
 	}
 }

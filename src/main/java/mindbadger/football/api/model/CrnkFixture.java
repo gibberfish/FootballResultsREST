@@ -18,7 +18,7 @@ import mindbadger.football.domain.Team;
 @JsonApiResource(type = "fixtures")
 public class CrnkFixture {
 	private Fixture fixture;
-	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat fixtureDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public CrnkFixture (Fixture fixture) {
 		this.fixture = fixture;
@@ -51,10 +51,11 @@ public class CrnkFixture {
 	@JsonProperty("fixtureDate")
 	public String getFixtureDate() {
 		Calendar fixtureDate = fixture.getFixtureDate();
-		return sdf.format(fixtureDate.getTime());
+		return fixtureDateFormatter.format(fixtureDate.getTime());
 	}
 	public void setFixtureDate(String fixtureDate) throws ParseException {
-		Date fixtureDateDate = sdf.parse(fixtureDate);
+		//TODO This is duplicated - extract to a util class, including constant formatter
+		Date fixtureDateDate = fixtureDateFormatter.parse(fixtureDate);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(fixtureDateDate);
 		fixture.setFixtureDate(cal);

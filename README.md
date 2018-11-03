@@ -55,7 +55,6 @@ Other Hyperlinks available from the response:
 ```
 http://localhost:1972/api/fixtureDate/2003-1_2004-02-21/fixtures
 ```
-(this one doesn't currently work)
 
 ### Season Division Fixtures
 ```

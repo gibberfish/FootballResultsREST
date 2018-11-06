@@ -1,5 +1,6 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.relationships;
 
+import mindbadger.football.api.repository.CrnkSeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

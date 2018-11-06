@@ -1,5 +1,8 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.relationships;
 
+import mindbadger.football.api.repository.CrnkSeasonRepository;
+import mindbadger.football.api.repository.CrnkTeamRepository;
+import mindbadger.football.api.util.SourceIdParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +19,7 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
     private CrnkSeasonRepository seasonRepository;
 
     @Autowired
-    public SeasonDivisionToTeamRepository(CrnkSeasonRepository seasonRepository,CrnkTeamRepository teamRepository) {
+    public SeasonDivisionToTeamRepository(CrnkSeasonRepository seasonRepository, CrnkTeamRepository teamRepository) {
         super (CrnkSeasonDivision.class, CrnkTeam.class);
         this.seasonRepository = seasonRepository;
     }
@@ -28,23 +31,18 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
 
     @Override
     public ResourceList<CrnkTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-    	CrnkSeason season = seasonRepository.findOne(parseSeasonIdFromSourceId(sourceId), querySpec);
+    	CrnkSeason season = seasonRepository.findOne(SourceIdParser.parseSeasonId(sourceId), querySpec);
     	
     	System.out.println("***** DEBUG: Number of season divisions = " + season.getSeasonDivisions().size());
     	
     	for (CrnkSeasonDivision seasonDivision : season.getSeasonDivisions() ) {
     		if (sourceId.equals(seasonDivision.getId())) {
-    			System.out.println("***** DEBUG: Number of season divisions = " + seasonDivision.getTeams().size());
+    			System.out.println("***** DEBUG: Number of teams = " + seasonDivision.getTeams().size());
     			
     			return querySpec.apply(seasonDivision.getTeams());
     		}
     	}
     	return null;
-    }
-
-    private Integer parseSeasonIdFromSourceId (String sourceId) {
-    	String[] idSplit = sourceId.split("-");
-    	return Integer.parseInt(idSplit[0]);
     }
 
     @Override

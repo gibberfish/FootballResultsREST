@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.crnk.core.resource.annotations.JsonApiId;
 import io.crnk.core.resource.annotations.JsonApiResource;
+import mindbadger.football.api.util.DateFormat;
 import mindbadger.football.domain.Division;
 import mindbadger.football.domain.Fixture;
 import mindbadger.football.domain.Season;
@@ -18,8 +19,7 @@ import mindbadger.football.domain.Team;
 @JsonApiResource(type = "fixtures")
 public class CrnkFixture {
 	private Fixture fixture;
-	public static final SimpleDateFormat fixtureDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	public CrnkFixture (Fixture fixture) {
 		this.fixture = fixture;
 	}
@@ -51,14 +51,10 @@ public class CrnkFixture {
 	@JsonProperty("fixtureDate")
 	public String getFixtureDate() {
 		Calendar fixtureDate = fixture.getFixtureDate();
-		return fixtureDateFormatter.format(fixtureDate.getTime());
+		return DateFormat.toString(fixtureDate.getTime());
 	}
 	public void setFixtureDate(String fixtureDate) throws ParseException {
-		//TODO This is duplicated - extract to a util class, including constant formatter
-		Date fixtureDateDate = fixtureDateFormatter.parse(fixtureDate);
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(fixtureDateDate);
-		fixture.setFixtureDate(cal);
+		fixture.setFixtureDate(DateFormat.toCalendar(fixtureDate));
 	}
 
 	@JsonProperty("homeTeam")

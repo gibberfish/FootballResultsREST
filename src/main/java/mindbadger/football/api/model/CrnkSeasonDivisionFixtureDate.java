@@ -11,16 +11,21 @@ import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToMany;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "fixtureDate")
-public class CrnkFixtureDate {
+public class CrnkSeasonDivisionFixtureDate {
+	private static Logger LOG = Logger.getLogger(CrnkSeasonDivisionFixtureDate.class);
 
 	private SeasonDivision seasonDivision;
 	private String fixtureDate;
 	private String id;
 
-	public CrnkFixtureDate(SeasonDivision seasonDivision, String fixtureDate) {
+	public CrnkSeasonDivisionFixtureDate(SeasonDivision seasonDivision, String fixtureDate) {
+		if (seasonDivision == null || fixtureDate == null) {
+			throw new IllegalArgumentException("seasonDivision and fixtureDate must not be null");
+		}
 		this.fixtureDate = fixtureDate;
 		this.seasonDivision = seasonDivision;
 		this.id = seasonDivision.getSeason().getSeasonNumber() + "-" + seasonDivision.getDivision().getDivisionId() + "_" + fixtureDate;
@@ -45,7 +50,19 @@ public class CrnkFixtureDate {
 	@JsonApiToMany(opposite = "fixture")
 	public Set<CrnkFixture> getFixtures () {
 		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
-		System.out.println("CrnkFixtureDate.getFixtures() called.");
+		LOG.info("CrnkSeasonDivisionFixtureDate.getFixtures() called. Currently returns and EMPTY set");
 		return fixtures;
+	}
+
+	@JsonApiToMany(opposite = "teamStatistics")
+	public Set<CrnkTeamStatistics> getTeamStatistics () {
+		Set<CrnkTeamStatistics> teamStatistics = new HashSet<CrnkTeamStatistics>();
+		LOG.info("CrnkSeasonDivisionFixtureDate.getTeamStatistics() called. Currently returns and EMPTY set");
+		return teamStatistics;
+	}
+
+	@JsonIgnore
+	public SeasonDivision getSeasonDivision(){
+		return this.seasonDivision;
 	}
 }

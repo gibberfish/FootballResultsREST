@@ -1,10 +1,12 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.impl;
 
 import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkFixture;
+import mindbadger.football.api.repository.CrnkFixtureRepository;
+import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Fixture;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
@@ -58,8 +60,8 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 	@Override
 	public ResourceList<CrnkFixture> findFixturesBySeasonDivisionAndDate(String seasonDivisionId, Calendar fixtureDate, QuerySpec querySpec) {
 
-		Season season = seasonRepository.findOne(parseSeasonIdFromSourceId(seasonDivisionId));
-		String divisionId = parseDivisionIdFromSourceId (seasonDivisionId);
+		Season season = seasonRepository.findOne(SourceIdParser.parseSeasonId(seasonDivisionId));
+		String divisionId = SourceIdParser.parseDivisionId (seasonDivisionId);
 		SeasonDivision seasonDivision = null;
 		for (SeasonDivision seasonDivisionToCheck : season.getSeasonDivisions()) {
 			if (divisionId.equals(seasonDivisionToCheck.getDivision().getDivisionId())) {
@@ -74,14 +76,5 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 			crnkFixtures.add(new CrnkFixture(fixture));
 		});
 		return querySpec.apply(crnkFixtures);
-	}
-
-	private Integer parseSeasonIdFromSourceId (String id) {
-		String[] idSplit = id.split("-");
-		return Integer.parseInt(idSplit[0]);
-	}
-	private String parseDivisionIdFromSourceId (String id) {
-		String[] idSplit = id.split("-");
-		return idSplit[1];
 	}
 }

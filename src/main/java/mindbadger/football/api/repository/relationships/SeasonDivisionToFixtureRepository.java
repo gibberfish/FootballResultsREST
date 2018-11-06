@@ -1,9 +1,11 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.relationships;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mindbadger.football.api.repository.CrnkFixtureRepository;
+import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +27,7 @@ public class SeasonDivisionToFixtureRepository extends RelationshipRepositoryBas
 	private CrnkSeasonDivisionRepository seasonDivisionRepository;
 
     @Autowired
-    public SeasonDivisionToFixtureRepository(CrnkSeasonDivisionRepository seasonDivisionRepository,CrnkFixtureRepository fixtureRepository) {
+    public SeasonDivisionToFixtureRepository(CrnkSeasonDivisionRepository seasonDivisionRepository, CrnkFixtureRepository fixtureRepository) {
         super (CrnkSeasonDivision.class, CrnkFixture.class);
         this.seasonDivisionRepository = seasonDivisionRepository;
     }

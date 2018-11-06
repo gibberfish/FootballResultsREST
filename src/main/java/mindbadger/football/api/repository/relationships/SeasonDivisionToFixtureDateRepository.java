@@ -1,10 +1,12 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.relationships;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
+import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +14,12 @@ import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkFixture;
-import mindbadger.football.api.model.CrnkFixtureDate;
 import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.domain.Fixture;
 import mindbadger.football.repository.FixtureRepository;
 
 @Component
-public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkFixtureDate, String> {
+public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeasonDivisionFixtureDate, String> {
 
 	@Autowired
 	private FixtureRepository fixtureRepository;
@@ -28,17 +29,17 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
 
     @Autowired
     public SeasonDivisionToFixtureDateRepository() {
-        super (CrnkSeasonDivision.class, CrnkFixtureDate.class);
+        super (CrnkSeasonDivision.class, CrnkSeasonDivisionFixtureDate.class);
     }
 
     @Override
-    public CrnkFixtureDate findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
+    public CrnkSeasonDivisionFixtureDate findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
         throw new IllegalArgumentException();
     }
 
     //TODO Really inefficient - needs refactoring
     @Override
-    public ResourceList<CrnkFixtureDate> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
+    public ResourceList<CrnkSeasonDivisionFixtureDate> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
     	
     	
     	CrnkSeasonDivision crnkSeasonDivision = seasonDivisionRepository.findOne(sourceId, querySpec);
@@ -54,10 +55,10 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
 		
 		Set<String> uniqueFixtureDates = new HashSet<String> (fixtureDatesWithDuplicates);
 		
-		Set<CrnkFixtureDate> crnkFixtureDates = new HashSet<CrnkFixtureDate> ();
+		Set<CrnkSeasonDivisionFixtureDate> crnkFixtureDates = new HashSet<CrnkSeasonDivisionFixtureDate> ();
 		
 		for (String uniqueFixtureDate : uniqueFixtureDates) {
-			CrnkFixtureDate fixtureDate = new CrnkFixtureDate (crnkSeasonDivision.getSeasonDivision(), uniqueFixtureDate);
+			CrnkSeasonDivisionFixtureDate fixtureDate = new CrnkSeasonDivisionFixtureDate(crnkSeasonDivision.getSeasonDivision(), uniqueFixtureDate);
 			crnkFixtureDates.add(fixtureDate);
 		}
 		
@@ -66,12 +67,12 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
     }
 
     @Override
-    protected CrnkFixtureDate getTarget(String targetId) {
+    protected CrnkSeasonDivisionFixtureDate getTarget(String targetId) {
         return super.getTarget(targetId);
     }
 
     @Override
-    protected Iterable<CrnkFixtureDate> getTargets(Iterable<String> targetIds) {
+    protected Iterable<CrnkSeasonDivisionFixtureDate> getTargets(Iterable<String> targetIds) {
         return super.getTargets(targetIds);
     }
 
@@ -81,7 +82,7 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
     }
 
     @Override
-    public Class<CrnkFixtureDate> getTargetResourceClass() {
-        return CrnkFixtureDate.class;
+    public Class<CrnkSeasonDivisionFixtureDate> getTargetResourceClass() {
+        return CrnkSeasonDivisionFixtureDate.class;
     }
 }

@@ -11,11 +11,12 @@ import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToMany;
 import io.crnk.core.resource.annotations.JsonApiToOne;
 import mindbadger.football.domain.SeasonDivision;
-import mindbadger.football.domain.SeasonDivisionTeam;
+import org.apache.log4j.Logger;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "seasonDivisions")
 public class CrnkSeasonDivision {
+	private static Logger LOG = Logger.getLogger(CrnkSeasonDivisionFixtureDate.class);
 
 	private SeasonDivision seasonDivision;
 	private String id;
@@ -65,8 +66,9 @@ public class CrnkSeasonDivision {
 	}
 
 	@JsonApiToMany(opposite = "fixtureDate")
-	public Set<CrnkFixtureDate> getFixtureDates () {
-		Set<CrnkFixtureDate> fixtureDates = new HashSet<CrnkFixtureDate>();
+	public Set<CrnkSeasonDivisionFixtureDate> getFixtureDates () {
+		LOG.info("getFixtureDates() - currently returns EMPTY set");
+		Set<CrnkSeasonDivisionFixtureDate> fixtureDates = new HashSet<CrnkSeasonDivisionFixtureDate>();
 		return fixtureDates;
 	}
 

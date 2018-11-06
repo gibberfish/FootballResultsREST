@@ -1,10 +1,11 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.crnk.core.engine.registry.ResourceRegistry;
 import io.crnk.core.exception.BadRequestException;
+import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.domain.DomainObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

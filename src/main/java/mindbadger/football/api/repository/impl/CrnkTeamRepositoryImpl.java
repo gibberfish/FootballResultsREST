@@ -1,8 +1,9 @@
-package mindbadger.football.api.repository;
+package mindbadger.football.api.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mindbadger.football.api.repository.CrnkTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

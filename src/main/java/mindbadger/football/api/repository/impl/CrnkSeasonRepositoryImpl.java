@@ -52,8 +52,11 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	public <S extends CrnkSeason> S save(S resource) {
 		LOG.debug("*********************** CrnkSeasonRepositoryImpl.save");
 
-		Season newSeason = domainObjectFactory.createSeason(resource.getId());
-		seasonRepository.save(newSeason);
+		//Season newSeason = domainObjectFactory.createSeason(resource.getId());
+		//seasonRepository.save(newSeason);
+
+		seasonRepository.save(resource.getSeason());
+
 		return resource;
 	}
 

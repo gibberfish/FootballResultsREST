@@ -80,6 +80,29 @@
 					},
 					"response": []
 				}
+			],
+			"description": "Calls the RepositoryImpl.findAll method\n",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4a343930-8a4f-4f89-8eef-4bbbed49fa7d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c544e30-0d0f-41ab-9f94-9ccd5a33fa7d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -307,6 +330,68 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Create Season Division",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\n        {\n            \"type\": \"seasonDivisions\",\n            \"attributes\": {\n                \"position\": 2,\n                \"seasonNumber\": 1799,\n                \"divisionId\": \"2\"\n            },\n            \"relationships\": {\n                \"division\": {\n                    \"data\": {\n                        \"id\": \"2\",\n                        \"type\": \"divisions\"\n                    }\n                },\n                \"season\": {\n                \t\"data\": {\n                \t\t\"id\": 1799,\n                \t\t\"type\": \"seasons\"\n                \t}\n                }\n            }\n        }\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Season Division within Season (doesn't work)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\n        {\n            \"type\": \"seasonDivisions\",\n            \"attributes\": {\n                \"position\": 2,\n                \"seasonNumber\": 1799,\n                \"divisionId\": \"2\"\n            },\n            \"relationships\": {\n                \"division\": {\n                    \"data\": {\n                        \"id\": \"2\",\n                        \"type\": \"divisions\"\n                    }\n                },\n                \"season\": {\n                \t\"data\": {\n                \t\t\"id\": 1799,\n                \t\t\"type\": \"seasons\"\n                \t}\n                }\n            }\n        }\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasons/1799/seasonDivisions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasons",
+								"1799",
+								"seasonDivisions"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -335,7 +420,8 @@
 								"2017",
 								"seasonDivisions"
 							]
-						}
+						},
+						"description": "Calls SeasonToSeasonDivisionRepository.findManyTargets\nCrnkSeasonRepositoryImpl.findOne\nCrnkSeasonRepositoryImpl.findAll\na getId for ALL seasons\nCrnkSeason.getSeasonDivisions\na getId for ALL seasonDivisions\n\nget season id and seasonnumber x8\nget seasondivision get division x4\n"
 					},
 					"response": []
 				}

@@ -52,9 +52,6 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	public <S extends CrnkSeason> S save(S resource) {
 		LOG.debug("*********************** CrnkSeasonRepositoryImpl.save");
 
-		//Season newSeason = domainObjectFactory.createSeason(resource.getId());
-		//seasonRepository.save(newSeason);
-
 		seasonRepository.save(resource.getSeason());
 
 		return resource;
@@ -81,7 +78,12 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	public void delete(Integer id) {
 		LOG.debug("*********************** CrnkSeasonRepositoryImpl.delete");
 
-		super.delete(id);
+		Season season = seasonRepository.findOne(id);
+		if (season == null) {
+			throw new BadRequestException("Season does not exist");
+		}
+
+		seasonRepository.delete(season);
 	}
 
 	protected CrnkSeasonRepositoryImpl(Class<CrnkSeason> resourceClass) {

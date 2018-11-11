@@ -6,6 +6,8 @@ import io.crnk.core.resource.annotations.JsonApiId;
 import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToOne;
 import mindbadger.football.api.util.DateFormat;
+import mindbadger.football.domain.Division;
+import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivisionTeam;
 
 import java.util.Calendar;
@@ -21,24 +23,43 @@ public class CrnkTeamStatistics {
 	private Map<String, Integer> statistics = new HashMap<>();
 	private String id;
 
-	public CrnkTeamStatistics(SeasonDivisionTeam seasonDivisionTeam, Calendar fixtureDate) {
+	public CrnkTeamStatistics(SeasonDivisionTeam seasonDivisionTeam, Calendar fixtureDateCalendar) {
 		this.seasonDivisionTeam = seasonDivisionTeam;
-		this.fixtureDate = fixtureDate;
-		String fixtureDateString = DateFormat.toString(fixtureDate);
+		this.fixtureDate = fixtureDateCalendar;
+		String fixtureDateString = DateFormat.toString(fixtureDateCalendar);
 		this.id = seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber() + "-" +
 				seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId() + "-" +
 				seasonDivisionTeam.getTeam().getTeamId() + "-" + fixtureDateString;
 	}
 
+	@JsonApiId
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId() {
+		throw new IllegalAccessError("Please set only as part of constructor");
+	}
+
+//	@JsonProperty("fixtureDate")
+//	public String getFixtureDate() {
+//		return DateFormat.toString(fixtureDate);
+//	}
+//
+//	public void setFixtureDate(String fixtureDate) {
+//		this.fixtureDate = DateFormat.toCalendar(fixtureDate);
+//	}
+
 	@JsonProperty("statistics")
-	public Map<String, Integer> getStatistics () {
+	public Map<String, Integer> getStatistics() {
 		return statistics;
 	}
-	public void setStatistics (Map<String, Integer> statistics) {
+	public void setStatistics(Map<String, Integer> statistics) {
 		this.statistics = statistics;
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisions")
+	@JsonProperty("season")
 	public CrnkSeason getSeason() {
 		return new CrnkSeason(seasonDivisionTeam.getSeasonDivision().getSeason());
 	}
@@ -47,23 +68,19 @@ public class CrnkTeamStatistics {
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisions")
-	public CrnkDivision getDivision() { return new CrnkDivision(seasonDivisionTeam.getSeasonDivision().getDivision()); }
-	public void setDivision (CrnkDivision division) {
+	public CrnkDivision getDivision() {
+		return new CrnkDivision(seasonDivisionTeam.getSeasonDivision().getDivision());
+	}
+	public void setDivision(CrnkDivision division) {
 		this.seasonDivisionTeam.getSeasonDivision().setDivision(division.getDivision());
 	}
 
 	@JsonApiToOne(opposite = "seasonDivisionTeams")
-	public CrnkTeam getTeam() { return new CrnkTeam(seasonDivisionTeam.getTeam()); }
-	public void setTeam (CrnkTeam team) {
+	public CrnkTeam getTeam() {
+		return new CrnkTeam(seasonDivisionTeam.getTeam());
+	}
+	public void setTeam(CrnkTeam team) {
 		this.seasonDivisionTeam.setTeam(team.getTeam());
-	}
-
-	@JsonApiId
-	public String getId() {
-		return this.id;
-	}
-	public void setId() {
-		throw new IllegalAccessError("Please set only as part of constructor");
 	}
 
 	@JsonIgnore
@@ -74,15 +91,5 @@ public class CrnkTeamStatistics {
 	@JsonIgnore
 	private void setSeasonDivisionTeam(SeasonDivisionTeam seasonDivisionTeam) {
 		this.seasonDivisionTeam = seasonDivisionTeam;
-	}
-
-	@JsonIgnore
-	public Calendar getFixtureDate () {
-		return this.fixtureDate;
-	}
-
-	@JsonIgnore
-	private void setFixtureDate(Calendar fixtureDate) {
-		this.fixtureDate = fixtureDate;
 	}
 }

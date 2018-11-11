@@ -91,4 +91,15 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 		return querySpec.apply(list);
 	}
+
+	@Override
+	public <S extends CrnkTeamStatistics> S save(S resource) {
+		LOG.info("******************************** NEED TO DO SOME CLEVER STUFF HERE TO SAVE MULTIPLE STATS ROWS **************************");
+		return super.save(resource);
+	}
+
+	@Override
+	public <S extends CrnkTeamStatistics> S create(S resource) {
+		throw new UnsupportedOperationException("Team Statistics records are derived from Fixture Dates and cannot be created");
+	}
 }

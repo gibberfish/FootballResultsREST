@@ -152,7 +152,28 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 	@Override
 	public void delete(String id) {
 		LOG.debug("*********************** CrnkSeasonDivisionRepositoryImpl.delete");
-		super.delete(id);
+
+		Integer seasonId = SourceIdParser.parseSeasonId(id);
+		String divisionId = SourceIdParser.parseDivisionId(id);
+
+		Season existingSeason = seasonRepository.findOne(seasonId);
+		if (existingSeason == null) {
+			throw new BadRequestException("Season doesn't exist");
+		}
+
+		boolean found = false;
+		for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
+			if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
+				found = true;
+				existingSeason.getSeasonDivisions().remove(seasonDivision);
+			}
+		}
+
+		if (!found) {
+			throw new BadRequestException("SeasonDivision doesn't exist");
+		}
+
+		seasonRepository.save(existingSeason);
 	}
 
 	@Override

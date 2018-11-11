@@ -701,6 +701,73 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Delete Resources",
+			"item": [
+				{
+					"name": "Delete Season",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"id\": \"1800\",\n        \"type\": \"seasons\"\n    }\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:1980/api/seasons/1800",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1980",
+							"path": [
+								"api",
+								"seasons",
+								"1800"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Season Division",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\n        {\n        \t\"id\": \"1799-3\",\n            \"type\": \"seasonDivisions\"\n        }\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisions/1799-3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisions",
+								"1799-3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

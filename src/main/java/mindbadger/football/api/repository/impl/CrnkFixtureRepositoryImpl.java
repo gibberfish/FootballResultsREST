@@ -1,5 +1,6 @@
 package mindbadger.football.api.repository.impl;
 
+import io.crnk.core.exception.BadRequestException;
 import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
@@ -12,6 +13,7 @@ import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.FixtureRepository;
 import mindbadger.football.repository.SeasonRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ import java.util.List;
 @Component
 public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixture, String>
 	implements CrnkFixtureRepository {
+	Logger LOG = Logger.getLogger (CrnkFixtureRepositoryImpl.class);
 	
 	@Autowired
 	private FixtureRepository fixtureRepository;
@@ -35,30 +38,46 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 
 	@Override
 	public synchronized ResourceList<CrnkFixture> findAll(QuerySpec querySpec) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findAll");
 
-		System.out.println(querySpec.toString());
+		List<CrnkFixture> katharsisFixtures = new ArrayList<>();
 
-		System.out.println("Filters:");
-		for (FilterSpec spec : querySpec.getFilters()) {
-			System.out.println(spec);
+		for (FilterSpec filter : querySpec.getFilters()) {
+			LOG.debug("   filter: " + filter);
+			LOG.debug("      expression: " + filter.getExpression());
+			LOG.debug("      operator  : " + filter.getOperator());
+			LOG.debug("      value     : " + filter.getValue());
+			LOG.debug("      attribute : " + filter.getAttributePath().get(0));
+
+			String value = filter.getValue().toString();
+			value = value.replace("[", "");
+			value = value.replace("]", "");
+
+			if (filter.getAttributePath().size() > 0 && "id".equals(filter.getAttributePath().get(0))) {
+				LOG.debug("  findAll filtering on id.");
+				//katharsisSeasonDivisionTeams.add(findOne(value, querySpec));
+			}
 		}
 
-		throw new RuntimeException();
+		return querySpec.apply(katharsisFixtures);
 	}
 
 	@Override
 	public ResourceList<CrnkFixture> findAll(Iterable<String> ids, QuerySpec querySpec) {
-		throw new RuntimeException();
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findAll with ids");
+		return super.findAll(ids, querySpec);
 	}
 
 	@Override
 	public CrnkFixture findOne(String id, QuerySpec querySpec) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findOne");
 		Fixture fixture = fixtureRepository.findOne(id);
 		return new CrnkFixture(fixture);
 	}
 
 	@Override
 	public ResourceList<CrnkFixture> findFixturesBySeasonDivisionAndDate(String seasonDivisionId, Calendar fixtureDate, QuerySpec querySpec) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findFixturesBySeasonDivisionAndDate");
 
 		Season season = seasonRepository.findOne(SourceIdParser.parseSeasonId(seasonDivisionId));
 		String divisionId = SourceIdParser.parseDivisionId (seasonDivisionId);
@@ -77,4 +96,30 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 		});
 		return querySpec.apply(crnkFixtures);
 	}
+
+	@Override
+	public <S extends CrnkFixture> S save(S resource) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.save");
+		Fixture savedFixture = fixtureRepository.save(resource.getFixture());
+		return (S) new CrnkFixture(savedFixture);
+	}
+
+	@Override
+	public <S extends CrnkFixture> S create(S resource) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.create");
+		//TODO Check that the fixture is not a duplicate
+
+		return save(resource);
+	}
+
+	@Override
+	public void delete(String id) {
+		LOG.debug("*********************** CrnkFixtureRepositoryImpl.delete");
+		Fixture fixture = fixtureRepository.findOne(id);
+		if (fixture == null) {
+			throw new BadRequestException("Fixture not found");
+		}
+		fixtureRepository.delete(fixture);
+	}
 }
+;

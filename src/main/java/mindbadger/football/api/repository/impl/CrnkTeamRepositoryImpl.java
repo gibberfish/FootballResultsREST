@@ -3,6 +3,7 @@ package mindbadger.football.api.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.crnk.core.exception.BadRequestException;
 import mindbadger.football.api.repository.CrnkTeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,5 +36,36 @@ public class CrnkTeamRepositoryImpl extends ResourceRepositoryBase<CrnkTeam, Str
     	}
 		
 		return querySpec.apply(katharsisTeams);
+	}
+
+	@Override
+	public CrnkTeam findOne(String id, QuerySpec querySpec) {
+		Team team = teamRepository.findOne(id);
+		return new CrnkTeam(team);
+	}
+
+	@Override
+	public ResourceList<CrnkTeam> findAll(Iterable<String> ids, QuerySpec querySpec) {
+		return super.findAll(ids, querySpec);
+	}
+
+	@Override
+	public <S extends CrnkTeam> S save(S resource) {
+		Team team = teamRepository.save(resource.getTeam());
+		return (S) new CrnkTeam(team);
+	}
+
+	@Override
+	public <S extends CrnkTeam> S create(S resource) {
+		return save(resource);
+	}
+
+	@Override
+	public void delete(String id) {
+		Team team = teamRepository.findOne(id);
+		if (team == null) {
+			throw new BadRequestException("Team not found");
+		}
+		teamRepository.delete(team);
 	}
 }

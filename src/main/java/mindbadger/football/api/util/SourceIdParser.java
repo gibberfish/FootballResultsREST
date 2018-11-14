@@ -21,4 +21,9 @@ public class SourceIdParser {
         String[] idSplit = seasonDivisionId.split("-");
         return idSplit[1];
     }
+
+    public static String parseTeamId(String sourceId) {
+        String[] idSplit = sourceId.split("-");
+        return idSplit[2];
+    }
 }

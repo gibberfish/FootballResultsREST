@@ -3,6 +3,7 @@ package mindbadger.football.api.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.crnk.core.exception.BadRequestException;
 import mindbadger.football.api.repository.CrnkDivisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,5 +36,36 @@ public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivis
     	}
 		
 		return querySpec.apply(katharsisDivisions);
+	}
+
+	@Override
+	public CrnkDivision findOne(String id, QuerySpec querySpec) {
+		Division division = divisionRepository.findOne(id);
+		return new CrnkDivision(division);
+	}
+
+	@Override
+	public ResourceList<CrnkDivision> findAll(Iterable<String> ids, QuerySpec querySpec) {
+		return super.findAll(ids, querySpec);
+	}
+
+	@Override
+	public <S extends CrnkDivision> S save(S resource) {
+		Division division = divisionRepository.save(resource.getDivision());
+		return (S) new CrnkDivision(division);
+	}
+
+	@Override
+	public <S extends CrnkDivision> S create(S resource) {
+		return save(resource);
+	}
+
+	@Override
+	public void delete(String id) {
+		Division division = divisionRepository.findOne(id);
+		if (division == null) {
+			throw new BadRequestException("Division does not exist");
+		}
+		divisionRepository.delete(division);
 	}
 }

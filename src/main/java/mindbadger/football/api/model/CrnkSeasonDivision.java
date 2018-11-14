@@ -97,12 +97,13 @@ public class CrnkSeasonDivision {
 	}
 
 	@JsonApiToMany(opposite = "team")
-	public Set<CrnkTeam> getTeams () {
+	public Set<CrnkSeasonDivisionTeam> getTeams () {
 		LOG.debug("*********************** CrnkSeasonDivision.getTeams");
-		Set<CrnkTeam> teams = new HashSet<CrnkTeam> ();
+		Set<CrnkSeasonDivisionTeam> teams = new HashSet<> ();
 
 		seasonDivision.getSeasonDivisionTeams().stream().forEach(seasonDivisionTeam -> {
-			teams.add(new CrnkTeam(seasonDivisionTeam.getTeam()));
+
+			teams.add(new CrnkSeasonDivisionTeam(seasonDivisionTeam));
 		});
 
 		return teams;

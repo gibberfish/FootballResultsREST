@@ -1,5 +1,6 @@
 package mindbadger.football.api.repository.relationships;
 
+import mindbadger.football.api.model.CrnkSeasonDivisionTeam;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.repository.CrnkTeamRepository;
 import mindbadger.football.api.util.SourceIdParser;
@@ -14,29 +15,30 @@ import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.api.model.CrnkTeam;
 
 @Component
-public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkTeam, String> {
+public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeasonDivisionTeam, String> {
 
     private CrnkSeasonRepository seasonRepository;
 
     @Autowired
     public SeasonDivisionToTeamRepository(CrnkSeasonRepository seasonRepository, CrnkTeamRepository teamRepository) {
-        super (CrnkSeasonDivision.class, CrnkTeam.class);
+        super (CrnkSeasonDivision.class, CrnkSeasonDivisionTeam.class);
         this.seasonRepository = seasonRepository;
     }
 
     @Override
-    public CrnkTeam findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
+    public CrnkSeasonDivisionTeam findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
         throw new IllegalArgumentException();
     }
 
     @Override
-    public ResourceList<CrnkTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
+    public ResourceList<CrnkSeasonDivisionTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
     	CrnkSeason season = seasonRepository.findOne(SourceIdParser.parseSeasonId(sourceId), querySpec);
-    	
+    	String divisionId = SourceIdParser.parseDivisionId(sourceId);
+
     	System.out.println("***** DEBUG: Number of season divisions = " + season.getSeasonDivisions().size());
     	
     	for (CrnkSeasonDivision seasonDivision : season.getSeasonDivisions() ) {
-    		if (sourceId.equals(seasonDivision.getId())) {
+    		if (divisionId.equals(seasonDivision.getId())) {
     			System.out.println("***** DEBUG: Number of teams = " + seasonDivision.getTeams().size());
     			
     			return querySpec.apply(seasonDivision.getTeams());
@@ -46,12 +48,12 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
     }
 
     @Override
-    protected CrnkTeam getTarget(String targetId) {
+    protected CrnkSeasonDivisionTeam getTarget(String targetId) {
         return super.getTarget(targetId);
     }
 
     @Override
-    protected Iterable<CrnkTeam> getTargets(Iterable<String> targetIds) {
+    protected Iterable<CrnkSeasonDivisionTeam> getTargets(Iterable<String> targetIds) {
         return super.getTargets(targetIds);
     }
 
@@ -61,7 +63,7 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
     }
 
     @Override
-    public Class<CrnkTeam> getTargetResourceClass() {
-        return CrnkTeam.class;
+    public Class<CrnkSeasonDivisionTeam> getTargetResourceClass() {
+        return CrnkSeasonDivisionTeam.class;
     }
 }

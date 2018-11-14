@@ -79,6 +79,56 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "* Get Fixtures (Not Allowed)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/fixtures",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"fixtures"
+							]
+						},
+						"description": "Cannot retrieve all fixtures - fixtures can only be retrieved as part of a SeasonDivision, SeasonDivisionTeam or FixtureDate"
+					},
+					"response": []
+				},
+				{
+					"name": "* Get Fixture Dates (Not Allowed)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/fixtureDate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"fixtureDate"
+							]
+						},
+						"description": "Can only retrieve fixture Dates within a Season or SeasonDivision"
+					},
+					"response": []
 				}
 			],
 			"description": "Calls the RepositoryImpl.findAll method\n",
@@ -159,31 +209,6 @@
 					"response": []
 				},
 				{
-					"name": "Get Season Division",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://localhost:1972/api/seasonDivisions/2017-2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "1972",
-							"path": [
-								"api",
-								"seasonDivisions",
-								"2017-2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Team",
 					"request": {
 						"method": "GET",
@@ -209,7 +234,57 @@
 					"response": []
 				},
 				{
-					"name": "Get Fixture Date",
+					"name": "Get Season Division",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisions/2017-2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisions",
+								"2017-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Season Division Team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisionTeams/2017-2-59",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisionTeams",
+								"2017-2-59"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "* Get Fixture Date",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -228,6 +303,31 @@
 								"api",
 								"fixtureDate",
 								"2017-2_2018-05-01"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fixture",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/fixtures/409709",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"fixtures",
+								"409709"
 							]
 						}
 					},
@@ -282,7 +382,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"id\": \"99999\",\n        \"type\": \"divisions\",\n        \"attributes\": {\n            \"divisionName\": \"Made Up Division\"\n        }\n    }\n}\n"
+							"raw": "{\n    \"data\": {\n        \"type\": \"divisions\",\n        \"attributes\": {\n            \"divisionName\": \"Made Up Division\"\n        }\n    }\n}\n"
 						},
 						"url": {
 							"raw": "http://localhost:1980/api/divisions/",
@@ -313,7 +413,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"id\": \"99999\",\n        \"type\": \"teams\",\n        \"attributes\": {\n            \"teamName\": \"Made Up Team\"\n        }\n    }\n}\n"
+							"raw": "{\n    \"data\": {\n        \"type\": \"teams\",\n        \"attributes\": {\n            \"teamName\": \"Made Up Team\"\n        }\n    }\n}\n"
 						},
 						"url": {
 							"raw": "http://localhost:1980/api/teams/",
@@ -362,7 +462,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Season Division within Season (doesn't work)",
+					"name": "Create Season Division within Season",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -388,6 +488,66 @@
 								"seasons",
 								"1799",
 								"seasonDivisions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Season Division Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"seasonDivisionTeams\",\n        \"attributes\": {\n            \"teamId\": \"59\",\n            \"seasonNumber\": 1799,\n            \"divisionId\": \"2\"\n        }\n    }\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisionTeams",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisionTeams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Fixture",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/vnd.api+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": {\n        \"type\": \"fixtures\",\n        \"attributes\": {\n            \"homeTeamId\": \"59\",\n            \"seasonNumber\": 1799,\n            \"divisionId\": \"2\",\n            \"homeGoals\": 1,\n            \"awayTeamId\": \"60\",\n            \"awayGoals\": 2,\n            \"fixtureDate\": \"1800-01-01\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/fixtures",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"fixtures"
 							]
 						}
 					},
@@ -766,8 +926,133 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete Season Division Season",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/seasonDivisionTeams/1799-2-60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"seasonDivisionTeams",
+								"1799-2-60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Fixture",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/fixtures/411999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"fixtures",
+								"411999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Division",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/divisions/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"divisions",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Team",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:1972/api/teams/137",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1972",
+							"path": [
+								"api",
+								"teams",
+								"137"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Get Single Season Division Team",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:1972/api/seasonDivisionTeams/2017-2-59",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1972",
+					"path": [
+						"api",
+						"seasonDivisionTeams",
+						"2017-2-59"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

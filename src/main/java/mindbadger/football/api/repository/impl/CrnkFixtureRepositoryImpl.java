@@ -7,6 +7,7 @@ import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.repository.CrnkFixtureRepository;
+import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Fixture;
 import mindbadger.football.domain.Season;
@@ -31,6 +32,9 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 
 	@Autowired
 	private SeasonRepository seasonRepository;
+
+	@Autowired
+	private SeasonUtils seasonUtils;
 	
 	protected CrnkFixtureRepositoryImpl() {
 		super(CrnkFixture.class);
@@ -79,14 +83,7 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 	public ResourceList<CrnkFixture> findFixturesBySeasonDivisionAndDate(String seasonDivisionId, Calendar fixtureDate, QuerySpec querySpec) {
 		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findFixturesBySeasonDivisionAndDate");
 
-		Season season = seasonRepository.findOne(SourceIdParser.parseSeasonId(seasonDivisionId));
-		String divisionId = SourceIdParser.parseDivisionId (seasonDivisionId);
-		SeasonDivision seasonDivision = null;
-		for (SeasonDivision seasonDivisionToCheck : season.getSeasonDivisions()) {
-			if (divisionId.equals(seasonDivisionToCheck.getDivision().getDivisionId())) {
-				seasonDivision = seasonDivisionToCheck;
-			}
-		}
+		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(seasonDivisionId);
 
 		List<Fixture> fixtures = fixtureRepository.getFixturesForDivisionInSeasonOnDate(seasonDivision, fixtureDate);
 

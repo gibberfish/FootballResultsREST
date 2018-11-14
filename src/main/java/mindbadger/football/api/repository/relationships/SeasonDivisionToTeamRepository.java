@@ -1,28 +1,41 @@
 package mindbadger.football.api.repository.relationships;
 
-import mindbadger.football.api.model.CrnkSeasonDivisionTeam;
+import mindbadger.football.api.model.*;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.repository.CrnkTeamRepository;
+import mindbadger.football.api.repository.utils.SeasonUtils;
+import mindbadger.football.api.util.DateFormat;
 import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.domain.SeasonDivision;
+import mindbadger.football.domain.SeasonDivisionTeam;
+import mindbadger.football.repository.SeasonRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.CrnkSeason;
-import mindbadger.football.api.model.CrnkSeasonDivision;
-import mindbadger.football.api.model.CrnkTeam;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 @Component
 public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeasonDivisionTeam, String> {
 
-    private CrnkSeasonRepository seasonRepository;
+    private static Logger LOG = Logger.getLogger(SeasonDivisionToTeamRepository.class);
+
+    //private CrnkSeasonRepository seasonRepository;
+    @Autowired
+    private SeasonRepository seasonRepository;
+
+    @Autowired
+    private SeasonUtils seasonUtils;
 
     @Autowired
     public SeasonDivisionToTeamRepository(CrnkSeasonRepository seasonRepository, CrnkTeamRepository teamRepository) {
         super (CrnkSeasonDivision.class, CrnkSeasonDivisionTeam.class);
-        this.seasonRepository = seasonRepository;
     }
 
     @Override
@@ -32,19 +45,18 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
 
     @Override
     public ResourceList<CrnkSeasonDivisionTeam> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-    	CrnkSeason season = seasonRepository.findOne(SourceIdParser.parseSeasonId(sourceId), querySpec);
-    	String divisionId = SourceIdParser.parseDivisionId(sourceId);
+        LOG.info("findOne SeasonDivisionToFixtureDateRepository : id = " + sourceId);
 
-    	System.out.println("***** DEBUG: Number of season divisions = " + season.getSeasonDivisions().size());
-    	
-    	for (CrnkSeasonDivision seasonDivision : season.getSeasonDivisions() ) {
-    		if (divisionId.equals(seasonDivision.getId())) {
-    			System.out.println("***** DEBUG: Number of teams = " + seasonDivision.getTeams().size());
-    			
-    			return querySpec.apply(seasonDivision.getTeams());
-    		}
-    	}
-    	return null;
+        List<CrnkSeasonDivisionTeam> crnkSeasonDivisionTeams = new ArrayList<>();
+
+        SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(sourceId);
+
+        for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
+            crnkSeasonDivisionTeams.add (
+                new CrnkSeasonDivisionTeam(seasonDivisionTeam));
+        }
+
+        return querySpec.apply(crnkSeasonDivisionTeams);
     }
 
     @Override

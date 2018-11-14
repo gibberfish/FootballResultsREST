@@ -5,6 +5,7 @@ import io.crnk.core.exception.BadRequestException;
 import io.crnk.core.queryspec.FilterSpec;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
+import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Division;
 import mindbadger.football.domain.DomainObjectFactory;
@@ -28,6 +29,9 @@ import java.util.List;
 public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkSeasonDivision, String>
 	implements CrnkSeasonDivisionRepository {
 	Logger LOG = Logger.getLogger (CrnkSeasonRepositoryImpl.class);
+
+	@Autowired
+	private SeasonUtils seasonUtils;
 
 	@Autowired
 	private SeasonRepository seasonRepository;
@@ -80,18 +84,9 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 	public CrnkSeasonDivision findOne(String id, QuerySpec querySpec) {
 		LOG.debug("*********************** CrnkSeasonDivisionRepositoryImpl.findOne");
 
-		Integer seasonId = SourceIdParser.parseSeasonId(id);
-		String divisionId = SourceIdParser.parseDivisionId(id);
+		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(id);
 
-		Season existingSeason = seasonRepository.findOne(seasonId);
-
-		for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
-			if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
-				return new CrnkSeasonDivision(seasonDivision);
-			}
-		}
-
-		return null;
+		return seasonDivision == null ? null : new CrnkSeasonDivision(seasonDivision);
 	}
 
 	protected CrnkSeasonDivisionRepositoryImpl(Class<CrnkSeasonDivision> resourceClass) {

@@ -1,12 +1,17 @@
 package mindbadger.football.api.repository.relationships;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
+import mindbadger.football.api.repository.impl.CrnkSeasonDivisionFixtureDateRepositoryImpl;
+import mindbadger.football.api.repository.utils.SeasonUtils;
+import mindbadger.football.api.util.DateFormat;
+import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.domain.Season;
+import mindbadger.football.domain.SeasonDivision;
+import mindbadger.football.repository.SeasonRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +26,19 @@ import mindbadger.football.repository.FixtureRepository;
 @Component
 public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeasonDivisionFixtureDate, String> {
 
+    private static Logger LOG = Logger.getLogger(SeasonDivisionToFixtureDateRepository.class);
+
 	@Autowired
 	private FixtureRepository fixtureRepository;
-	
-	@Autowired
-	private CrnkSeasonDivisionRepository seasonDivisionRepository;
+
+    @Autowired
+    private SeasonRepository seasonRepository;
+
+    @Autowired
+    private SeasonUtils seasonUtils;
+
+//	@Autowired
+//	private CrnkSeasonDivisionRepository seasonDivisionRepository;
 
     @Autowired
     public SeasonDivisionToFixtureDateRepository() {
@@ -37,33 +50,22 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
         throw new IllegalArgumentException();
     }
 
-    //TODO Really inefficient - needs refactoring
     @Override
     public ResourceList<CrnkSeasonDivisionFixtureDate> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
-    	
-    	
-    	CrnkSeasonDivision crnkSeasonDivision = seasonDivisionRepository.findOne(sourceId, querySpec);
-    	
-    	List<Fixture> fixtures = fixtureRepository.getFixturesForDivisionInSeason(crnkSeasonDivision.getSeasonDivision());
-    	
-    	List<String> fixtureDatesWithDuplicates = new ArrayList<String> (); 
-    	
-		for (Fixture fixture : fixtures) {
-			CrnkFixture crnkFixture = new CrnkFixture(fixture);
-			fixtureDatesWithDuplicates.add(crnkFixture.getFixtureDate());
-		}
-		
-		Set<String> uniqueFixtureDates = new HashSet<String> (fixtureDatesWithDuplicates);
-		
-		Set<CrnkSeasonDivisionFixtureDate> crnkFixtureDates = new HashSet<CrnkSeasonDivisionFixtureDate> ();
-		
-		for (String uniqueFixtureDate : uniqueFixtureDates) {
-			CrnkSeasonDivisionFixtureDate fixtureDate = new CrnkSeasonDivisionFixtureDate(crnkSeasonDivision.getSeasonDivision(), uniqueFixtureDate);
-			crnkFixtureDates.add(fixtureDate);
-		}
-		
-		
-    	return querySpec.apply(crnkFixtureDates);
+        LOG.info("findOne SeasonDivisionToFixtureDateRepository : id = " + sourceId);
+
+        List<CrnkSeasonDivisionFixtureDate> crnkSeasonDivisionFixtureDates = new ArrayList<>();
+
+        SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(sourceId);
+
+        List<Calendar> fixtureDates = fixtureRepository.getFixtureDatesForDivisionInSeason(seasonDivision);
+
+        for (Calendar fixtureDate : fixtureDates) {
+            crnkSeasonDivisionFixtureDates.add(
+                new CrnkSeasonDivisionFixtureDate(seasonDivision, DateFormat.toString(fixtureDate)));
+        }
+
+    	return querySpec.apply(crnkSeasonDivisionFixtureDates);
     }
 
     @Override

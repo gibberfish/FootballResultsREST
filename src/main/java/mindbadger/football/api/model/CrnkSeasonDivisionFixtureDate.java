@@ -13,9 +13,8 @@ import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import org.apache.log4j.Logger;
 
-//TODO Change the entity name to fixtureDates to be consistent with other entities (change postman!)
 @SuppressWarnings("deprecation")
-@JsonApiResource(type = "fixtureDate")
+@JsonApiResource(type = "fixtureDates")
 public class CrnkSeasonDivisionFixtureDate {
 	private static Logger LOG = Logger.getLogger(CrnkSeasonDivisionFixtureDate.class);
 

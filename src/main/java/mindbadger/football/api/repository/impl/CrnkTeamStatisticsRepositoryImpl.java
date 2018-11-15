@@ -6,6 +6,7 @@ import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
 import mindbadger.football.api.model.CrnkTeamStatistics;
 import mindbadger.football.api.repository.CrnkTeamStatisticsRepository;
+import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.api.util.DateFormat;
 import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Season;
@@ -28,6 +29,9 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 	implements CrnkTeamStatisticsRepository {
 
 	private static Logger LOG = Logger.getLogger(CrnkTeamStatisticsRepositoryImpl.class);
+
+	@Autowired
+	private SeasonUtils seasonUtils;
 
 	@Autowired
 	private SeasonRepository seasonRepository;
@@ -58,20 +62,8 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 	@Override
 	public ResourceList<CrnkTeamStatistics> findStatisticsBySeasonDivisionAndDate(String seasonDivisionId, Calendar cal, QuerySpec querySpec) {
 		LOG.info("******************** findStatisticsBySeasonDivisionAndDate *****************************");
-		LOG.info("date to find = " + DateFormat.toString(cal));
-		LOG.info("seasonDivisionId= " + seasonDivisionId);
-		String id = seasonDivisionId + "_" + DateFormat.toString(cal);
 
-		Season season = seasonRepository.findOne(SourceIdParser.parseSeasonId(seasonDivisionId));
-		String divisionId = SourceIdParser.parseDivisionId (seasonDivisionId);
-		SeasonDivision seasonDivision = null;
-		for (SeasonDivision seasonDivisionToCheck : season.getSeasonDivisions()) {
-			if (divisionId.equals(seasonDivisionToCheck.getDivision().getDivisionId())) {
-				seasonDivision = seasonDivisionToCheck;
-			}
-		}
-
-		LOG.info("seasonDivision = " + seasonDivision);
+		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(seasonDivisionId);
 
 		Set<SeasonDivisionTeam> seasonDivisionTeams = seasonDivision.getSeasonDivisionTeams();
 		LOG.info("seasonDivisionTeams count = " + seasonDivisionTeams.size());

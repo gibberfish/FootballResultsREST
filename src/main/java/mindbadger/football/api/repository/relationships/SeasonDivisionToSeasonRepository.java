@@ -2,6 +2,8 @@ package mindbadger.football.api.repository.relationships;
 
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.domain.Season;
+import mindbadger.football.repository.SeasonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,17 +16,19 @@ import mindbadger.football.api.model.CrnkSeasonDivision;
 @Component
 public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase<CrnkSeasonDivision, String, CrnkSeason, Integer> {
 
-    private CrnkSeasonRepository seasonRepository;
+    @Autowired
+    private SeasonRepository seasonRepository;
 
     @Autowired
     public SeasonDivisionToSeasonRepository (CrnkSeasonRepository seasonRepository) {
     	super (CrnkSeasonDivision.class, CrnkSeason.class);
-    	this.seasonRepository = seasonRepository;
     }
     
     @Override
     public CrnkSeason findOneTarget(String sourceId, String fieldName, QuerySpec querySpec) {
-    	return seasonRepository.findOne(SourceIdParser.parseSeasonId(sourceId), querySpec);
+        Integer id = SourceIdParser.parseSeasonId(sourceId);
+        Season season = seasonRepository.findOne(id);
+        return new CrnkSeason(season);
     }
 
     @SuppressWarnings("unchecked")

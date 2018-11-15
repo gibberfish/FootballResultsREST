@@ -26,7 +26,6 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
 
     private static Logger LOG = Logger.getLogger(SeasonDivisionToTeamRepository.class);
 
-    //private CrnkSeasonRepository seasonRepository;
     @Autowired
     private SeasonRepository seasonRepository;
 

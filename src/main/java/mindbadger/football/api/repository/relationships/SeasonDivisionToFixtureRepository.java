@@ -6,6 +6,8 @@ import java.util.Set;
 
 import mindbadger.football.api.repository.CrnkFixtureRepository;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
+import mindbadger.football.api.repository.utils.SeasonUtils;
+import mindbadger.football.domain.SeasonDivision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +26,11 @@ public class SeasonDivisionToFixtureRepository extends RelationshipRepositoryBas
 	private FixtureRepository fixtureRepository;
 	
 	@Autowired
-	private CrnkSeasonDivisionRepository seasonDivisionRepository;
+    private SeasonUtils seasonUtils;
 
     @Autowired
     public SeasonDivisionToFixtureRepository(CrnkSeasonDivisionRepository seasonDivisionRepository, CrnkFixtureRepository fixtureRepository) {
         super (CrnkSeasonDivision.class, CrnkFixture.class);
-        this.seasonDivisionRepository = seasonDivisionRepository;
     }
 
     @Override
@@ -41,10 +42,10 @@ public class SeasonDivisionToFixtureRepository extends RelationshipRepositoryBas
     public ResourceList<CrnkFixture> findManyTargets(String sourceId, String fieldName, QuerySpec querySpec) {
     	
     	Set<CrnkFixture> crnkFixtures = new HashSet<CrnkFixture> ();
-    	
-    	CrnkSeasonDivision crnkSeasonDivision = seasonDivisionRepository.findOne(sourceId, querySpec);
-    	
-    	List<Fixture> fixtures = fixtureRepository.getFixturesForDivisionInSeason(crnkSeasonDivision.getSeasonDivision());
+
+        SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(sourceId);
+
+    	List<Fixture> fixtures = fixtureRepository.getFixturesForDivisionInSeason(seasonDivision);
     	
 		for (Fixture fixture : fixtures) {
 			crnkFixtures.add(new CrnkFixture(fixture));

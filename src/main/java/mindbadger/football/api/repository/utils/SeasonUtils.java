@@ -1,6 +1,6 @@
 package mindbadger.football.api.repository.utils;
 
-import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
+import io.crnk.core.exception.ResourceNotFoundException;
 import mindbadger.football.api.repository.relationships.SeasonDivisionToFixtureDateRepository;
 import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Season;
@@ -9,9 +9,6 @@ import mindbadger.football.repository.SeasonRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeasonUtils {
@@ -34,6 +31,6 @@ public class SeasonUtils {
             }
         }
 
-        throw new IllegalArgumentException("No Season Division found for id");
+        throw new ResourceNotFoundException("No Season Division found for id");
     }
 }

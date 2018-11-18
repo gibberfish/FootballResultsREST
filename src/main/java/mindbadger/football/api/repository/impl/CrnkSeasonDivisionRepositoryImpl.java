@@ -2,7 +2,9 @@ package mindbadger.football.api.repository.impl;
 
 import io.crnk.core.engine.registry.ResourceRegistry;
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
+import mindbadger.football.api.ConflictException;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
@@ -85,8 +87,11 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 		LOG.debug("*********************** CrnkSeasonDivisionRepositoryImpl.findOne");
 
 		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(id);
+		if (seasonDivision == null) {
+			throw new ResourceNotFoundException("SeasonDivision not found");
+		}
 
-		return seasonDivision == null ? null : new CrnkSeasonDivision(seasonDivision);
+		return new CrnkSeasonDivision(seasonDivision);
 	}
 
 	protected CrnkSeasonDivisionRepositoryImpl(Class<CrnkSeasonDivision> resourceClass) {
@@ -137,7 +142,7 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 
 		for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
 			if (newDivisionToAddToSeason.equals(seasonDivision.getDivision())) {
-				throw new BadRequestException("Division in Season already exists");
+				throw new ConflictException("Division in Season already exists");
 			}
 		}
 
@@ -165,7 +170,7 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 		}
 
 		if (!found) {
-			throw new BadRequestException("SeasonDivision doesn't exist");
+			throw new ResourceNotFoundException("SeasonDivision doesn't exist");
 		}
 
 		seasonRepository.save(existingSeason);

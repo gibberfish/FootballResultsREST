@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import mindbadger.football.api.repository.CrnkTeamRepository;
+import mindbadger.football.domain.Division;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +43,9 @@ public class CrnkTeamRepositoryImpl extends ResourceRepositoryBase<CrnkTeam, Str
 	@Override
 	public CrnkTeam findOne(String id, QuerySpec querySpec) {
 		Team team = teamRepository.findOne(id);
+		if (team == null) {
+			throw new ResourceNotFoundException("Team does not exist");
+		}
 		return new CrnkTeam(team);
 	}
 
@@ -57,6 +62,10 @@ public class CrnkTeamRepositoryImpl extends ResourceRepositoryBase<CrnkTeam, Str
 
 	@Override
 	public <S extends CrnkTeam> S create(S resource) {
+		Team team = teamRepository.findMatching(resource.getTeam());
+		if (team != null) {
+			throw new BadRequestException("Team already exists");
+		}
 		return save(resource);
 	}
 
@@ -64,7 +73,7 @@ public class CrnkTeamRepositoryImpl extends ResourceRepositoryBase<CrnkTeam, Str
 	public void delete(String id) {
 		Team team = teamRepository.findOne(id);
 		if (team == null) {
-			throw new BadRequestException("Team not found");
+			throw new ResourceNotFoundException("Team does not exist");
 		}
 		teamRepository.delete(team);
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import mindbadger.football.api.repository.CrnkDivisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,9 @@ public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivis
 	@Override
 	public CrnkDivision findOne(String id, QuerySpec querySpec) {
 		Division division = divisionRepository.findOne(id);
+		if (division == null) {
+			throw new ResourceNotFoundException("Division does not exist");
+		}
 		return new CrnkDivision(division);
 	}
 
@@ -57,6 +61,10 @@ public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivis
 
 	@Override
 	public <S extends CrnkDivision> S create(S resource) {
+		Division division = divisionRepository.findMatching(resource.getDivision());
+		if (division != null) {
+			throw new BadRequestException("Division already exists");
+		}
 		return save(resource);
 	}
 
@@ -64,7 +72,7 @@ public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivis
 	public void delete(String id) {
 		Division division = divisionRepository.findOne(id);
 		if (division == null) {
-			throw new BadRequestException("Division does not exist");
+			throw new ResourceNotFoundException("Division does not exist");
 		}
 		divisionRepository.delete(division);
 	}

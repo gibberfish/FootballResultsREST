@@ -5,6 +5,8 @@ import java.util.List;
 
 import io.crnk.core.engine.registry.ResourceRegistry;
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceIdNotFoundException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.domain.DomainObjectFactory;
 import org.apache.log4j.Logger;
@@ -71,7 +73,12 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	public CrnkSeason findOne(Integer id, QuerySpec querySpec) {
 		LOG.debug("*********************** CrnkSeasonRepositoryImpl.findOne");
 
-		return super.findOne(id, querySpec);
+		Season season = seasonRepository.findOne(id);
+		if (season == null) {
+			throw new ResourceNotFoundException("Season does not exist");
+		}
+
+		return new CrnkSeason(season);
 	}
 
 	@Override
@@ -80,7 +87,7 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 
 		Season season = seasonRepository.findOne(id);
 		if (season == null) {
-			throw new BadRequestException("Season does not exist");
+			throw new ResourceNotFoundException("Season does not exist");
 		}
 
 		seasonRepository.delete(season);

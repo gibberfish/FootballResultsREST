@@ -72,6 +72,9 @@ public class CrnkSeason {
 
         return seasonDivisions;
 	}
+	public void setSeasonDivisions (Set<CrnkSeasonDivision> seasonDivisions) {
+		LOG.debug("*********************** CrnkSeason.setSeasonDivisions");
+	}
 
     @JsonIgnore
 	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!

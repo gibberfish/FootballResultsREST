@@ -51,6 +51,7 @@ public class CrnkSeason {
 	
 	@JsonApiId
 	public Integer getId() {
+		if (season == null) return null;
 		LOG.debug("*********************** CrnkSeason.getId: " + season.getSeasonNumber());
 		return season.getSeasonNumber();
 	}

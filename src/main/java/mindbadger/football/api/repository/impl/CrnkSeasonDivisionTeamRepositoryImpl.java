@@ -2,6 +2,7 @@ package mindbadger.football.api.repository.impl;
 
 import io.crnk.core.engine.registry.ResourceRegistry;
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
@@ -86,6 +87,10 @@ public class CrnkSeasonDivisionTeamRepositoryImpl extends ResourceRepositoryBase
 
 		Season existingSeason = seasonRepository.findOne(seasonId);
 
+		if (existingSeason == null) {
+			throw new ResourceNotFoundException("Season Division Team not found");
+		}
+
 		for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
 			if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
 
@@ -98,7 +103,7 @@ public class CrnkSeasonDivisionTeamRepositoryImpl extends ResourceRepositoryBase
 			}
 		}
 
-		return null;
+		throw new ResourceNotFoundException("Season Division Team not found");
 	}
 
 	protected CrnkSeasonDivisionTeamRepositoryImpl(Class<CrnkSeasonDivisionTeam> resourceClass) {

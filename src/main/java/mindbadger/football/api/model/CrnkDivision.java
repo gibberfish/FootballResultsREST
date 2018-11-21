@@ -40,6 +40,7 @@ public class CrnkDivision {
 	
 	@JsonApiId
 	public String getId() {
+		if (division == null) return null;
 		return division.getDivisionId();
 	}
 	public void setId(String id) {

@@ -7,6 +7,7 @@ import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
+import mindbadger.football.api.ConflictException;
 import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.api.model.CrnkSeasonDivisionTeam;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
@@ -188,7 +189,7 @@ public class CrnkSeasonDivisionTeamRepositoryImpl extends ResourceRepositoryBase
 			if (existingDivision.getDivisionId().equals(seasonDivision.getDivision().getDivisionId())) {
 				for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
 					if (existingTeam.getTeamId().equals(seasonDivisionTeam.getTeam().getTeamId())) {
-						throw new BadRequestException("Season Division Team already exists");
+						throw new ConflictException("Season Division Team already exists");
 					}
 				}
 			}

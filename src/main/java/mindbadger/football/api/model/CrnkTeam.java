@@ -40,6 +40,7 @@ public class CrnkTeam {
 	
 	@JsonApiId
 	public String getId() {
+		if (team == null) return null;
 		return team.getTeamId();
 	}
 	public void setId(String id) {

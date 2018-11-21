@@ -60,19 +60,16 @@ public class CrnkFixture {
 
 	@JsonApiId
 	public String getId() {
+		if(fixture == null) return null;
 		return fixture.getFixtureId();
 	}
 	public void setId (String id) {
 		this.fixture.setFixtureId(id);
 	}
 
-
-
-
-
-
 	@JsonProperty("seasonNumber")
 	public Integer getSeasonNumber () {
+		if (fixture==null) return null;
 		return fixture.getSeasonDivision().getSeason().getSeasonNumber();
 	}
 	public void setSeasonNumber (Integer seasonNumber) {
@@ -82,6 +79,7 @@ public class CrnkFixture {
 
 	@JsonProperty("divisionId")
 	public String getDivisionId () {
+		if (fixture == null) return null;
 		return fixture.getSeasonDivision().getDivision().getDivisionId();
 	}
 	public void setDivisionId (String divisionId) {
@@ -91,6 +89,7 @@ public class CrnkFixture {
 
 	@JsonProperty("homeTeamId")
 	public String getHomeTeamId () {
+		if (fixture==null) return null;
 		return fixture.getHomeTeam().getTeamId();
 	}
 	public void setHomeTeamId (String homeTeamId) {
@@ -100,6 +99,7 @@ public class CrnkFixture {
 
 	@JsonProperty("awayTeamId")
 	public String getAwayTeamId () {
+		if (fixture==null) return null;
 		return fixture.getAwayTeam().getTeamId();
 	}
 	public void setAwayTeamId (String awayTeamId) {
@@ -109,6 +109,7 @@ public class CrnkFixture {
 
 	@JsonProperty("fixtureDate")
 	public String getFixtureDate() {
+		if (fixture == null || fixture.getFixtureDate() == null) return null;
 		Calendar fixtureDate = fixture.getFixtureDate();
 		return DateFormat.toString(fixtureDate.getTime());
 	}
@@ -118,6 +119,7 @@ public class CrnkFixture {
 
 	@JsonProperty("homeGoals")
 	public Integer getHomeGoals() {
+		if (fixture==null) return null;
 		return fixture.getHomeGoals();
 	}
 	public void setHomeGoals(Integer homeGoals) {
@@ -126,16 +128,12 @@ public class CrnkFixture {
 
 	@JsonProperty("awayGoals")
 	public Integer getAwayGoals() {
+		if(fixture==null) return null;
 		return fixture.getAwayGoals();
 	}
 	public void setAwayGoals(Integer awayGoals) {
 		fixture.setAwayGoals(awayGoals);
 	}
-
-
-
-
-
 
 	@JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 	public CrnkSeasonDivision getSeasonDivision() {
@@ -164,44 +162,6 @@ public class CrnkFixture {
 		LOG.debug("*********************** CrnkSeasonDivisionTeam.SetAwayTeam");
 		this.fixture.setAwayTeam(awayTeam.getTeam());
 	}
-
-
-
-//	@JsonProperty("season")
-//	public Season getSeason() {
-//		return fixture.getSeason();
-//	}
-//	public void setSeason(Season season) {
-//		fixture.setSeason(season);
-//	}
-//
-//	@JsonProperty("division")
-//	public Division getDivision() {
-//		return fixture.getDivision();
-//	}
-//
-//	public void setDivision(Division division) {
-//		fixture.setDivision(division);
-//	}
-//	@JsonProperty("homeTeam")
-//	public Team getHomeTeam() {
-//		return fixture.getHomeTeam();
-//	}
-//
-//	public void setHomeTeam(Team homeTeam) {
-//		fixture.setHomeTeam(homeTeam);
-//	}
-//	@JsonProperty("awayTeam")
-//	public Team getAwayTeam() {
-//		return fixture.getAwayTeam();
-//	}
-//
-//	public void setAwayTeam(Team awayTeam) {
-//		fixture.setAwayTeam(awayTeam);
-//	}
-
-
-
 
 	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	@JsonIgnore

@@ -25,7 +25,7 @@ public class CrnkSeasonDivisionTeam {
     private String id;
 
     public CrnkSeasonDivisionTeam () {
-        LOG.debug("*********************** Create new CrnkSeasonDivisionTeam - empty constructor");
+        //LOG.debug("*********************** Create new CrnkSeasonDivisionTeam - empty constructor");
 
         this.domainObjectFactory = (DomainObjectFactory)
                 ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");
@@ -51,11 +51,11 @@ public class CrnkSeasonDivisionTeam {
     @JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 //    @JsonApiToOne(opposite = "seasonDivisions")
     public CrnkSeasonDivision getSeasonDivision() {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.getSeasonDivision");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.getSeasonDivision");
         return new CrnkSeasonDivision(seasonDivisionTeam.getSeasonDivision());
     }
     public void setSeasonDivision(CrnkSeasonDivision seasonDivision) {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivision");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivision");
         this.seasonDivisionTeam.setSeasonDivision(seasonDivision.getSeasonDivision());
         createId();
     }
@@ -63,10 +63,10 @@ public class CrnkSeasonDivisionTeam {
     @JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 //    @JsonApiToOne(opposite = "seasonDivisions")
     public CrnkTeam getTeam() {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.getTeam");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.getTeam");
         return new CrnkTeam(seasonDivisionTeam.getTeam()); }
     public void setTeam (CrnkTeam team) {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.SetTeam");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.SetTeam");
         this.seasonDivisionTeam.setTeam(team.getTeam());
         createId();
     }
@@ -103,23 +103,23 @@ public class CrnkSeasonDivisionTeam {
 
     @JsonApiId
     public String getId() {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.getId");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.getId");
         return this.id;
     }
     public void setId(String id) {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.setId - don't do anything here - id set automatically, value = " + id);
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.setId - don't do anything here - id set automatically, value = " + id);
         //this.id = id;
     }
 
     @JsonIgnore
     public SeasonDivisionTeam getSeasonDivisionTeam() {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.getSeasonDivisionTeam");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.getSeasonDivisionTeam");
         return seasonDivisionTeam;
     }
 
     @JsonIgnore
     private void setSeasonDivisionTeam(SeasonDivisionTeam seasonDivisionTeam) {
-        LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivisionTeam");
+        //LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivisionTeam");
         this.seasonDivisionTeam = seasonDivisionTeam;
         ensureSeasonDivisionTeamHasASeasonDivision();
         createId();

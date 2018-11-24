@@ -1,10 +1,13 @@
 package mindbadger.football.api.repository.impl;
 
 import io.crnk.core.exception.BadRequestException;
+import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
+import mindbadger.football.api.ConflictException;
+import mindbadger.football.api.NotImplementedException;
 import mindbadger.football.api.ValidationException;
 import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.repository.CrnkFixtureRepository;
@@ -41,46 +44,62 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 
 	@Override
 	public synchronized ResourceList<CrnkFixture> findAll(QuerySpec querySpec) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findAll");
+		LOG.debug("******************************************");
+		LOG.debug("  FIND ALL Fixture");
+		LOG.debug("******************************************");
 
-		List<CrnkFixture> katharsisFixtures = new ArrayList<>();
-
-		for (FilterSpec filter : querySpec.getFilters()) {
-			LOG.debug("   filter: " + filter);
-			LOG.debug("      expression: " + filter.getExpression());
-			LOG.debug("      operator  : " + filter.getOperator());
-			LOG.debug("      value     : " + filter.getValue());
-			LOG.debug("      attribute : " + filter.getAttributePath().get(0));
-
-			String value = filter.getValue().toString();
-			value = value.replace("[", "");
-			value = value.replace("]", "");
-
-			if (filter.getAttributePath().size() > 0 && "id".equals(filter.getAttributePath().get(0))) {
-				LOG.debug("  findAll filtering on id.");
-				//katharsisSeasonDivisionTeams.add(findOne(value, querySpec));
-			}
-		}
-
-		return querySpec.apply(katharsisFixtures);
+		throw new NotImplementedException("FindAll for Fixtures not implemented");
+//		List<CrnkFixture> katharsisFixtures = new ArrayList<>();
+//
+//		for (FilterSpec filter : querySpec.getFilters()) {
+//			LOG.debug("   filter: " + filter);
+//			LOG.debug("      expression: " + filter.getExpression());
+//			LOG.debug("      operator  : " + filter.getOperator());
+//			LOG.debug("      value     : " + filter.getValue());
+//			LOG.debug("      attribute : " + filter.getAttributePath().get(0));
+//
+//			String value = filter.getValue().toString();
+//			value = value.replace("[", "");
+//			value = value.replace("]", "");
+//
+//			if (filter.getAttributePath().size() > 0 && "id".equals(filter.getAttributePath().get(0))) {
+//				LOG.debug("  findAll filtering on id.");
+//				//katharsisSeasonDivisionTeams.add(findOne(value, querySpec));
+//			}
+//		}
+//
+//		return querySpec.apply(katharsisFixtures);
 	}
 
 	@Override
 	public ResourceList<CrnkFixture> findAll(Iterable<String> ids, QuerySpec querySpec) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findAll with ids");
+		LOG.debug("******************************************");
+		LOG.debug("  FIND ALL Fixture with id");
+		LOG.debug("     ids=" + ids);
+		LOG.debug("******************************************");
 		return super.findAll(ids, querySpec);
 	}
 
 	@Override
 	public CrnkFixture findOne(String id, QuerySpec querySpec) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findOne");
+		LOG.debug("******************************************");
+		LOG.debug("  FIND ONE Fixture");
+		LOG.debug("     id=" + id);
+		LOG.debug("******************************************");
 		Fixture fixture = fixtureRepository.findOne(id);
+		if (fixture == null) {
+			throw new ResourceNotFoundException("No matching Fixture found");
+		}
 		return new CrnkFixture(fixture);
 	}
 
 	@Override
 	public ResourceList<CrnkFixture> findFixturesBySeasonDivisionAndDate(String seasonDivisionId, Calendar fixtureDate, QuerySpec querySpec) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.findFixturesBySeasonDivisionAndDate");
+		LOG.debug("******************************************");
+		LOG.debug("  FIND Fixture by season, division & date");
+		LOG.debug("     seasonDivisionId=" + seasonDivisionId);
+		LOG.debug("     fixtureDate=" + fixtureDate);
+		LOG.debug("******************************************");
 
 		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(seasonDivisionId);
 
@@ -95,7 +114,41 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 
 	@Override
 	public <S extends CrnkFixture> S save(S resource) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.save");
+		LOG.debug("******************************************");
+		LOG.debug("  SAVE Fixture");
+		LOG.debug("     Fixture=" + resource.getFixture());
+		LOG.debug("******************************************");
+
+		return (S) saveFixture(resource);
+	}
+
+	@Override
+	public <S extends CrnkFixture> S create(S resource) {
+		LOG.debug("******************************************");
+		LOG.debug("  CREATE Fixture");
+		LOG.debug("     Fixture=" + resource.getFixture());
+		LOG.debug("******************************************");		Fixture fixture = fixtureRepository.findOne(resource.getId());
+		if (fixture != null) {
+			throw new ConflictException("Fixture already exists");
+		}
+		return (S) saveFixture(resource);
+	}
+
+	@Override
+	public void delete(String id) {
+		LOG.debug("******************************************");
+		LOG.debug("  DELETE Fixture");
+		LOG.debug("     id=" + id);
+		LOG.debug("******************************************");
+		Fixture fixture = fixtureRepository.findOne(id);
+		if (fixture == null) {
+			throw new ResourceNotFoundException("Fixture not found");
+		}
+		fixtureRepository.delete(fixture);
+	}
+
+	private CrnkFixture saveFixture (CrnkFixture resource) {
+		Fixture existingFixture = fixtureRepository.findOne(resource.getId());
 
 		if (resource.getFixture() == null) {
 			throw new ValidationException("Fixture object cannot be null");
@@ -106,26 +159,48 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 			throw new ValidationException("Fixture cannot have a score without a fixture date");
 		}
 
-		Fixture savedFixture = fixtureRepository.save(resource.getFixture());
-		return (S) new CrnkFixture(savedFixture);
-	}
-
-	@Override
-	public <S extends CrnkFixture> S create(S resource) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.create");
-		//TODO Check that the fixture is not a duplicate
-
-		return save(resource);
-	}
-
-	@Override
-	public void delete(String id) {
-		LOG.debug("*********************** CrnkFixtureRepositoryImpl.delete");
-		Fixture fixture = fixtureRepository.findOne(id);
-		if (fixture == null) {
-			throw new BadRequestException("Fixture not found");
+		if (resource.getFixture().getSeasonDivision() == null ||
+				resource.getFixture().getSeasonDivision().getSeason() == null) {
+			throw new ValidationException("Must supply a Season");
 		}
-		fixtureRepository.delete(fixture);
+
+		if (resource.getFixture().getSeasonDivision().getDivision() == null) {
+			throw new ValidationException("Must supply a Division");
+		}
+
+		if (resource.getFixture().getHomeTeam() == null) {
+			throw new ValidationException("Must supply a Home Team");
+		}
+
+		if (resource.getFixture().getAwayTeam() == null) {
+			throw new ValidationException("Must supply an Away Team");
+		}
+
+		if (existingFixture != null && existingFixture.getSeasonDivision() != null &&
+				!existingFixture.getSeasonDivision().getSeason().
+						equals(resource.getFixture().getSeasonDivision().getSeason())) {
+			throw new ValidationException("Cannot update Season for an existing fixture");
+		}
+
+		if (existingFixture != null && existingFixture.getSeasonDivision() != null &&
+				!existingFixture.getSeasonDivision().getDivision().
+						equals(resource.getFixture().getSeasonDivision().getDivision())) {
+			throw new ValidationException("Cannot update Division for an existing fixture");
+		}
+
+		if (existingFixture != null &&
+				!existingFixture.getHomeTeam().
+						equals(resource.getFixture().getHomeTeam())) {
+			throw new ValidationException("Cannot update Home Team for an existing fixture");
+		}
+
+		if (existingFixture != null &&
+				!existingFixture.getAwayTeam().
+						equals(resource.getFixture().getAwayTeam())) {
+			throw new ValidationException("Cannot update Away Team for an existing fixture");
+		}
+
+		Fixture savedFixture = fixtureRepository.save(resource.getFixture());
+		return new CrnkFixture(savedFixture);
 	}
 }
-;

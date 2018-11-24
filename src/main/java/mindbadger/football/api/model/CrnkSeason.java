@@ -41,28 +41,28 @@ public class CrnkSeason {
 
 	@JsonProperty("seasonNumber")
 	public Integer getSeasonNumber() {
-		LOG.debug("*********************** CrnkSeason.getSeasonNumber: " + season.getSeasonNumber());
+		//LOG.debug("*********************** CrnkSeason.getSeasonNumber: " + season.getSeasonNumber());
 		return season.getSeasonNumber();
 	}
 	public void setSeasonNumber(Integer seasonNumber) {
-		LOG.debug("*********************** CrnkSeason.setSeasonNumber: " + seasonNumber);
+		//LOG.debug("*********************** CrnkSeason.setSeasonNumber: " + seasonNumber);
 		season.setSeasonNumber(seasonNumber);
 	}
 	
 	@JsonApiId
 	public Integer getId() {
 		if (season == null) return null;
-		LOG.debug("*********************** CrnkSeason.getId: " + season.getSeasonNumber());
+		//LOG.debug("*********************** CrnkSeason.getId: " + season.getSeasonNumber());
 		return season.getSeasonNumber();
 	}
 	public void setId(Integer id) {
-		LOG.debug("*********************** CrnkSeason.setId: " + id);
+		//LOG.debug("*********************** CrnkSeason.setId: " + id);
 		season.setSeasonNumber(id);
 	}
 
 	@JsonApiToMany(opposite = "seasons")
 	public Set<CrnkSeasonDivision> getSeasonDivisions () {
-		LOG.debug("*********************** CrnkSeason.getSeasonDivisions");
+		//LOG.debug("*********************** CrnkSeason.getSeasonDivisions");
 
 		Set<CrnkSeasonDivision> seasonDivisions = new HashSet<CrnkSeasonDivision>();
 
@@ -74,20 +74,20 @@ public class CrnkSeason {
         return seasonDivisions;
 	}
 	public void setSeasonDivisions (Set<CrnkSeasonDivision> seasonDivisions) {
-		LOG.debug("*********************** CrnkSeason.setSeasonDivisions");
+		//LOG.debug("*********************** CrnkSeason.setSeasonDivisions");
 	}
 
     @JsonIgnore
 	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	public Season getSeason() {
-		LOG.debug("*********************** CrnkSeason.getSeason");
+		//LOG.debug("*********************** CrnkSeason.getSeason");
 		return season;
 	}
 
     @JsonIgnore
 	//TODO Even though we don't want to expose this directly, Crnk requires this to work!!!
 	public void setSeason(Season season) {
-		LOG.debug("*********************** CrnkSeason.setSeason");
+		//LOG.debug("*********************** CrnkSeason.setSeason");
 		this.season = season;
 	}
 }

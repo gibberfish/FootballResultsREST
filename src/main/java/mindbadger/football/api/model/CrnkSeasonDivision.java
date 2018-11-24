@@ -26,7 +26,7 @@ public class CrnkSeasonDivision {
 	private String id;
 
 	public CrnkSeasonDivision () {
-		LOG.debug("*********************** Create new CrnkSeasonDivision - empty constructor");
+		//LOG.debug("*********************** Create new CrnkSeasonDivision - empty constructor");
 
 		this.domainObjectFactory = (DomainObjectFactory)
 				ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");
@@ -48,11 +48,11 @@ public class CrnkSeasonDivision {
 //	@JsonApiRelation(lookUp=LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize=SerializeType.ONLY_ID)
 	@JsonApiToOne(opposite = "seasonDivisions")
 	public CrnkSeason getSeason() {
-		LOG.debug("*********************** CrnkSeasonDivision.getSeason");
+		//LOG.debug("*********************** CrnkSeasonDivision.getSeason");
 		return new CrnkSeason(seasonDivision.getSeason());
 	}
 	public void setSeason(CrnkSeason season) {
-		LOG.debug("*********************** CrnkSeasonDivision.setSeason");
+		//LOG.debug("*********************** CrnkSeasonDivision.setSeason");
 		this.seasonDivision.setSeason(season.getSeason());
 		createId();
 	}
@@ -60,10 +60,10 @@ public class CrnkSeasonDivision {
 //	@JsonApiRelation(lookUp=LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize=SerializeType.ONLY_ID)
 	@JsonApiToOne(opposite = "seasonDivisions")
 	public CrnkDivision getDivision() {
-		LOG.debug("*********************** CrnkSeasonDivision.getDivision");
+		//LOG.debug("*********************** CrnkSeasonDivision.getDivision");
 		return new CrnkDivision(seasonDivision.getDivision()); }
 	public void setDivision (CrnkDivision division) {
-		LOG.debug("*********************** CrnkSeasonDivision.SetDivision");
+		//LOG.debug("*********************** CrnkSeasonDivision.SetDivision");
 		this.seasonDivision.setDivision(division.getDivision());
 		createId();
 	}
@@ -88,17 +88,17 @@ public class CrnkSeasonDivision {
 
 	@JsonProperty("position")
 	public int getPosition () {
-		LOG.debug("*********************** CrnkSeasonDivision.getPosition");
+		//LOG.debug("*********************** CrnkSeasonDivision.getPosition");
 		return seasonDivision.getDivisionPosition();
 	}
 	public void setPosition (int position) {
-		LOG.debug("*********************** CrnkSeasonDivision.setPosition");
+		//LOG.debug("*********************** CrnkSeasonDivision.setPosition");
 		seasonDivision.setDivisionPosition(position);
 	}
 
 	@JsonApiToMany(opposite = "team")
 	public Set<CrnkSeasonDivisionTeam> getTeams () {
-		LOG.debug("*********************** CrnkSeasonDivision.getTeams");
+		//LOG.debug("*********************** CrnkSeasonDivision.getTeams");
 		Set<CrnkSeasonDivisionTeam> teams = new HashSet<> ();
 
 		seasonDivision.getSeasonDivisionTeams().stream().forEach(seasonDivisionTeam -> {
@@ -111,7 +111,7 @@ public class CrnkSeasonDivision {
 
 	@JsonApiToMany(opposite = "fixture")
 	public Set<CrnkFixture> getFixtures () {
-		LOG.debug("*********************** CrnkSeasonDivision.getFixtures");
+		//LOG.debug("*********************** CrnkSeasonDivision.getFixtures");
 		throw new UnsupportedOperationException("CrnkSeasonDivision.getFixtures not implemented yet");
 //		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
 //		return fixtures;
@@ -119,7 +119,7 @@ public class CrnkSeasonDivision {
 
 	@JsonApiToMany(opposite = "fixtureDate")
 	public Set<CrnkSeasonDivisionFixtureDate> getFixtureDates () {
-		LOG.debug("*********************** CrnkSeasonDivision.getFixtureDates");
+		//LOG.debug("*********************** CrnkSeasonDivision.getFixtureDates");
 		throw new UnsupportedOperationException("CrnkSeasonDivision.getFixtureDates not implemented yet");
 //		Set<CrnkSeasonDivisionFixtureDate> fixtureDates = new HashSet<CrnkSeasonDivisionFixtureDate>();
 //		return fixtureDates;
@@ -127,23 +127,23 @@ public class CrnkSeasonDivision {
 
 	@JsonApiId
 	public String getId() {
-		LOG.debug("*********************** CrnkSeasonDivision.getId");
+		//LOG.debug("*********************** CrnkSeasonDivision.getId");
 		return this.id;
 	}
 	public void setId(String id) {
-		LOG.debug("*********************** CrnkSeasonDivision.setId - don't do anything here - id set automatically, value = " + id);
+		//LOG.debug("*********************** CrnkSeasonDivision.setId - don't do anything here - id set automatically, value = " + id);
 		//this.id = id;
 	}
 	
 	@JsonIgnore
 	public SeasonDivision getSeasonDivision() {
-		LOG.debug("*********************** CrnkSeasonDivision.getSeasonDivision");
+		//LOG.debug("*********************** CrnkSeasonDivision.getSeasonDivision");
 		return seasonDivision;
 	}
 
 	@JsonIgnore
 	private void setSeasonDivision(SeasonDivision seasonDivision) {
-		LOG.debug("*********************** CrnkSeasonDivision.setSeasonDivision");
+		//LOG.debug("*********************** CrnkSeasonDivision.setSeasonDivision");
 		this.seasonDivision = seasonDivision;
 		createId();
 	}
@@ -151,6 +151,6 @@ public class CrnkSeasonDivision {
 	private void createId () {
 		this.id = seasonDivision.getSeason() == null ? "-" : seasonDivision.getSeason().getSeasonNumber() + "-";
 		this.id += seasonDivision.getDivision() == null ? "" : seasonDivision.getDivision().getDivisionId();
-		LOG.debug("CrnkSeasonDivision id now set to : " + this.id);
+		//LOG.debug("CrnkSeasonDivision id now set to : " + this.id);
 	}
 }

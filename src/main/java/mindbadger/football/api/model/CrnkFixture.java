@@ -32,7 +32,7 @@ public class CrnkFixture {
 	private DomainObjectFactory domainObjectFactory;
 
 	public CrnkFixture () {
-		LOG.debug("*********************** Create new CrnkFixture- empty constructor");
+		//LOG.debug("*********************** Create new CrnkFixture- empty constructor");
 
 		this.domainObjectFactory = (DomainObjectFactory)
 				ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");
@@ -55,7 +55,7 @@ public class CrnkFixture {
 
 	public CrnkFixture (Fixture fixture) {
 		this();
-		LOG.debug("*********************** Create new CrnkFixture");
+		//LOG.debug("*********************** Create new CrnkFixture");
 		this.fixture = fixture;
 	}
 
@@ -129,9 +129,9 @@ public class CrnkFixture {
 		return fixture.getHomeGoals();
 	}
 	public void setHomeGoals(Integer homeGoals) {
-		LOG.debug("######################################################################");
-		LOG.debug("*********************** CrnkFixture.setHomeGoals = " + homeGoals);
-		LOG.debug("######################################################################");
+		//LOG.debug("######################################################################");
+		//LOG.debug("*********************** CrnkFixture.setHomeGoals = " + homeGoals);
+		//LOG.debug("######################################################################");
 		fixture.setHomeGoals(homeGoals);
 	}
 
@@ -146,29 +146,32 @@ public class CrnkFixture {
 
 	@JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 	public CrnkSeasonDivision getSeasonDivision() {
-		LOG.debug("*********************** CrnkFixture.getSeasonDivision");
+		//LOG.debug("*********************** CrnkFixture.getSeasonDivision");
+		if(fixture == null) return null;
 		return new CrnkSeasonDivision(fixture.getSeasonDivision());
 	}
 	public void setSeasonDivision(CrnkSeasonDivision seasonDivision) {
-		LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivision");
+		//LOG.debug("*********************** CrnkSeasonDivisionTeam.setSeasonDivision");
 		this.fixture.setSeasonDivision(seasonDivision.getSeasonDivision());
 	}
 
 	@JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 	public CrnkTeam getHomeTeam() {
-		LOG.debug("*********************** CrnkSeasonDivisionTeam.getHomeTeam");
+		//LOG.debug("*********************** CrnkSeasonDivisionTeam.getHomeTeam");
+		if(fixture == null) return null;
 		return new CrnkTeam(fixture.getHomeTeam()); }
 	public void setHomeTeam (CrnkTeam homeTeam) {
-		LOG.debug("*********************** CrnkSeasonDivisionTeam.SetHomeTeam");
+		//LOG.debug("*********************** CrnkSeasonDivisionTeam.SetHomeTeam");
 		this.fixture.setHomeTeam(homeTeam.getTeam());
 	}
 
 	@JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
 	public CrnkTeam getAwayTeam() {
-		LOG.debug("*********************** CrnkSeasonDivisionTeam.getAwayTeam");
+		//LOG.debug("*********************** CrnkSeasonDivisionTeam.getAwayTeam");
+		if(fixture == null) return null;
 		return new CrnkTeam(fixture.getAwayTeam()); }
 	public void setAwayTeam (CrnkTeam awayTeam) {
-		LOG.debug("*********************** CrnkSeasonDivisionTeam.SetAwayTeam");
+		//LOG.debug("*********************** CrnkSeasonDivisionTeam.SetAwayTeam");
 		this.fixture.setAwayTeam(awayTeam.getTeam());
 	}
 

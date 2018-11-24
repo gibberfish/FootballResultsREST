@@ -23,7 +23,7 @@ public class CrnkTeam {
 	}
 
 	public CrnkTeam () {
-		LOG.debug("*********************** Create new CrnkTeam- empty constructor");
+		//LOG.debug("*********************** Create new CrnkTeam- empty constructor");
 
 		this.domainObjectFactory = (DomainObjectFactory)
 				ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");

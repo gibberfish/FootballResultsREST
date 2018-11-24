@@ -23,7 +23,7 @@ public class CrnkDivision {
 	}
 
 	public CrnkDivision () {
-		LOG.debug("*********************** Create new CrnkDivision- empty constructor");
+		//LOG.debug("*********************** Create new CrnkDivision- empty constructor");
 
 		this.domainObjectFactory = (DomainObjectFactory)
 				ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");

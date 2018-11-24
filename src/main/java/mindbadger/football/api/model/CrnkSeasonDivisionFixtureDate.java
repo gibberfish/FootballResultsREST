@@ -50,14 +50,14 @@ public class CrnkSeasonDivisionFixtureDate {
 	@JsonApiToMany(opposite = "fixture")
 	public Set<CrnkFixture> getFixtures () {
 		Set<CrnkFixture> fixtures = new HashSet<CrnkFixture>();
-		LOG.info("CrnkSeasonDivisionFixtureDate.getFixtures() called. Currently returns and EMPTY set");
+		//LOG.info("CrnkSeasonDivisionFixtureDate.getFixtures() called. Currently returns and EMPTY set");
 		return fixtures;
 	}
 
 	@JsonApiToMany(opposite = "teamStatistics")
 	public Set<CrnkTeamStatistics> getTeamStatistics () {
 		Set<CrnkTeamStatistics> teamStatistics = new HashSet<CrnkTeamStatistics>();
-		LOG.info("CrnkSeasonDivisionFixtureDate.getTeamStatistics() called. Currently returns and EMPTY set");
+		//LOG.info("CrnkSeasonDivisionFixtureDate.getTeamStatistics() called. Currently returns and EMPTY set");
 		return teamStatistics;
 	}
 

@@ -5,12 +5,11 @@ import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
+import mindbadger.football.api.ValidationException;
 import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.repository.CrnkFixtureRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
-import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.Fixture;
-import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.FixtureRepository;
 import mindbadger.football.repository.SeasonRepository;
@@ -97,6 +96,16 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 	@Override
 	public <S extends CrnkFixture> S save(S resource) {
 		LOG.debug("*********************** CrnkFixtureRepositoryImpl.save");
+
+		if (resource.getFixture() == null) {
+			throw new ValidationException("Fixture object cannot be null");
+		}
+
+		if (resource.getFixture().getFixtureDate() == null &&
+				(resource.getFixture().getHomeGoals() != null || resource.getFixture().getAwayGoals() != null)) {
+			throw new ValidationException("Fixture cannot have a score without a fixture date");
+		}
+
 		Fixture savedFixture = fixtureRepository.save(resource.getFixture());
 		return (S) new CrnkFixture(savedFixture);
 	}

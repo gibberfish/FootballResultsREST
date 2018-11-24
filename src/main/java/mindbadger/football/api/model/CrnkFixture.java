@@ -54,6 +54,7 @@ public class CrnkFixture {
 	}
 
 	public CrnkFixture (Fixture fixture) {
+		this();
 		LOG.debug("*********************** Create new CrnkFixture");
 		this.fixture = fixture;
 	}
@@ -73,6 +74,7 @@ public class CrnkFixture {
 		return fixture.getSeasonDivision().getSeason().getSeasonNumber();
 	}
 	public void setSeasonNumber (Integer seasonNumber) {
+		if (seasonNumber == null) return;
 		Season season = seasonRepository.findOne(seasonNumber);
 		this.fixture.getSeasonDivision().setSeason(season);
 	}
@@ -114,7 +116,11 @@ public class CrnkFixture {
 		return DateFormat.toString(fixtureDate.getTime());
 	}
 	public void setFixtureDate(String fixtureDate) throws ParseException {
-		fixture.setFixtureDate(DateFormat.toCalendar(fixtureDate));
+		if (fixtureDate == null) {
+			fixture.setFixtureDate(null);
+		} else {
+			fixture.setFixtureDate(DateFormat.toCalendar(fixtureDate));
+		}
 	}
 
 	@JsonProperty("homeGoals")
@@ -123,6 +129,9 @@ public class CrnkFixture {
 		return fixture.getHomeGoals();
 	}
 	public void setHomeGoals(Integer homeGoals) {
+		LOG.debug("######################################################################");
+		LOG.debug("*********************** CrnkFixture.setHomeGoals = " + homeGoals);
+		LOG.debug("######################################################################");
 		fixture.setHomeGoals(homeGoals);
 	}
 

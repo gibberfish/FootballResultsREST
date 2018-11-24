@@ -111,6 +111,11 @@
 			<artifactId>crnk-brave</artifactId>
 			<version>${crnk-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>io.crnk</groupId>
+			<artifactId>crnk-validation</artifactId>
+			<version>${crnk-version}</version>
+		</dependency>
 	    <dependency>
 	      <groupId>org.reflections</groupId>
 	      <artifactId>reflections</artifactId>

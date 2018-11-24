@@ -1,5 +1,6 @@
 package mindbadger.football.api.repository.impl;
 
+import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
 import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
@@ -95,19 +96,21 @@ public class CrnkSeasonDivisionFixtureDateRepositoryImpl extends ResourceReposit
 		//TODO Copied from CrnkSeasonDivisionTeamRepoImpl - refactor into a service
 		Season existingSeason = seasonRepository.findOne(seasonNumber);
 
-		for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
-			if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
+		if (existingSeason != null) {
+			for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
+				if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
 
-				List<Calendar> fixtureDates = fixtureRepository.getFixtureDatesForDivisionInSeason(seasonDivision);
+					List<Calendar> fixtureDates = fixtureRepository.getFixtureDatesForDivisionInSeason(seasonDivision);
 
-				for (Calendar fixtureDate : fixtureDates) {
-					if (seasonDivisionFixtureDateString.equals(DateFormat.toString(fixtureDate))) {
-						return new CrnkSeasonDivisionFixtureDate(seasonDivision, seasonDivisionFixtureDateString);
+					for (Calendar fixtureDate : fixtureDates) {
+						if (seasonDivisionFixtureDateString.equals(DateFormat.toString(fixtureDate))) {
+							return new CrnkSeasonDivisionFixtureDate(seasonDivision, seasonDivisionFixtureDateString);
+						}
 					}
 				}
 			}
 		}
 
-		return null;
+		throw new ResourceNotFoundException("Fixture Date not found");
 	}
 }

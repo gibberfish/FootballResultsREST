@@ -2,7 +2,7 @@ package mindbadger.football.api.repository.utils;
 
 import io.crnk.core.exception.ResourceNotFoundException;
 import mindbadger.football.api.repository.relationships.SeasonDivisionToFixtureDateRepository;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.SeasonRepository;
@@ -20,8 +20,8 @@ public class SeasonUtils {
     public SeasonDivision getSeasonDivisionFromCrnkId (String sourceId) {
         LOG.info("SeasonUtils.getSeasonDivisionFromCrnkId : id = " + sourceId);
 
-        Integer seasonNumber = SourceIdParser.parseSeasonId(sourceId);
-        String divisionId = SourceIdParser.parseDivisionId(sourceId);
+        Integer seasonNumber = SourceIdUtils.parseSeasonId(sourceId);
+        String divisionId = SourceIdUtils.parseDivisionId(sourceId);
 
         Season existingSeason = seasonRepository.findOne(seasonNumber);
 

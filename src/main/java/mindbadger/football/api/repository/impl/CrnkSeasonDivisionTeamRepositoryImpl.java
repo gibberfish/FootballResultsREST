@@ -8,11 +8,9 @@ import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.ConflictException;
-import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.api.model.CrnkSeasonDivisionTeam;
-import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import mindbadger.football.api.repository.CrnkSeasonDivisionTeamRepository;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.*;
 import mindbadger.football.repository.DivisionRepository;
 import mindbadger.football.repository.SeasonRepository;
@@ -82,9 +80,9 @@ public class CrnkSeasonDivisionTeamRepositoryImpl extends ResourceRepositoryBase
 	public CrnkSeasonDivisionTeam findOne(String id, QuerySpec querySpec) {
 		LOG.debug("*********************** CrnkSeasonDivisionTeamRepositoryImpl.findOne");
 
-		Integer seasonId = SourceIdParser.parseSeasonId(id);
-		String divisionId = SourceIdParser.parseDivisionId(id);
-		String teamId = SourceIdParser.parseTeamId(id);
+		Integer seasonId = SourceIdUtils.parseSeasonId(id);
+		String divisionId = SourceIdUtils.parseDivisionId(id);
+		String teamId = SourceIdUtils.parseTeamId(id);
 
 		Season existingSeason = seasonRepository.findOne(seasonId);
 
@@ -202,9 +200,9 @@ public class CrnkSeasonDivisionTeamRepositoryImpl extends ResourceRepositoryBase
 	public void delete(String id) {
 		LOG.debug("*********************** CrnkSeasonDivisionTeamRepositoryImpl.delete");
 
-		Integer seasonId = SourceIdParser.parseSeasonId(id);
-		String divisionId = SourceIdParser.parseDivisionId(id);
-		String teamId = SourceIdParser.parseTeamId(id);
+		Integer seasonId = SourceIdUtils.parseSeasonId(id);
+		String divisionId = SourceIdUtils.parseDivisionId(id);
+		String teamId = SourceIdUtils.parseTeamId(id);
 
 		LOG.debug("***********************    seasonId: " + seasonId + ", divisionId: " +
 				divisionId + ", teamId: " + teamId);

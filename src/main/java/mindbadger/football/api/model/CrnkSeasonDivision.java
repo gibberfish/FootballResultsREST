@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.crnk.core.resource.annotations.*;
 import mindbadger.configuration.ApplicationContextProvider;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.DomainObjectFactory;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.DivisionRepository;
@@ -149,8 +150,11 @@ public class CrnkSeasonDivision {
 	}
 
 	private void createId () {
-		this.id = seasonDivision.getSeason() == null ? "-" : seasonDivision.getSeason().getSeasonNumber() + "-";
-		this.id += seasonDivision.getDivision() == null ? "" : seasonDivision.getDivision().getDivisionId();
+
+		this.id = SourceIdUtils.createSeasonDivisionId(
+				seasonDivision.getSeason() == null ? null : seasonDivision.getSeason().getSeasonNumber(),
+				seasonDivision.getDivision() == null ? null : seasonDivision.getDivision().getDivisionId()
+		);
 		//LOG.debug("CrnkSeasonDivision id now set to : " + this.id);
 	}
 }

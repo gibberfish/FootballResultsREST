@@ -6,9 +6,11 @@ import io.crnk.core.resource.annotations.JsonApiId;
 import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToOne;
 import mindbadger.football.api.util.DateFormat;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Division;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivisionTeam;
+import org.apache.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import java.util.Map;
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "teamStatistics")
 public class CrnkTeamStatistics {
+	private static Logger LOG = Logger.getLogger(CrnkTeamStatistics.class);
 
 	private SeasonDivisionTeam seasonDivisionTeam;
 	private Calendar fixtureDate;
@@ -27,9 +30,8 @@ public class CrnkTeamStatistics {
 		this.seasonDivisionTeam = seasonDivisionTeam;
 		this.fixtureDate = fixtureDateCalendar;
 		String fixtureDateString = DateFormat.toString(fixtureDateCalendar);
-		this.id = seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber() + "-" +
-				seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId() + "-" +
-				seasonDivisionTeam.getTeam().getTeamId() + "-" + fixtureDateString;
+
+		createId();
 	}
 
 	@JsonApiId
@@ -92,4 +94,16 @@ public class CrnkTeamStatistics {
 	private void setSeasonDivisionTeam(SeasonDivisionTeam seasonDivisionTeam) {
 		this.seasonDivisionTeam = seasonDivisionTeam;
 	}
+
+	private void createId() {
+		// <season>-<division>-<team>-<date>
+		this.id = SourceIdUtils.createTeamStatisticsId(
+				seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getSeason() == null ? null : seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber(),
+				seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getDivision() == null ? null : seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId(),
+				seasonDivisionTeam.getTeam() == null ? null : seasonDivisionTeam.getTeam().getTeamId(),
+				DateFormat.toString(fixtureDate)
+		);
+		LOG.debug("CrnkTeamStatistics id now set to : " + this.id);
+	}
+
 }

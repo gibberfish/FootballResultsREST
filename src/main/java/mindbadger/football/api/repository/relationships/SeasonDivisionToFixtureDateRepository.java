@@ -3,12 +3,8 @@ package mindbadger.football.api.repository.relationships;
 import java.util.*;
 
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
-import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
-import mindbadger.football.api.repository.impl.CrnkSeasonDivisionFixtureDateRepositoryImpl;
 import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.api.util.DateFormat;
-import mindbadger.football.api.util.SourceIdParser;
-import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.SeasonRepository;
 import org.apache.log4j.Logger;
@@ -18,9 +14,7 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.model.CrnkSeasonDivision;
-import mindbadger.football.domain.Fixture;
 import mindbadger.football.repository.FixtureRepository;
 
 @Component

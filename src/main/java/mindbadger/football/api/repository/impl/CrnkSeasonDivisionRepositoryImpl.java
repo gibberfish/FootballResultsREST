@@ -6,9 +6,8 @@ import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
 import mindbadger.football.api.ConflictException;
 import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
-import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Division;
 import mindbadger.football.domain.DomainObjectFactory;
 import mindbadger.football.domain.Season;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import mindbadger.football.api.model.CrnkSeason;
 import mindbadger.football.api.model.CrnkSeasonDivision;
 
 import java.util.ArrayList;
@@ -153,8 +151,8 @@ public class CrnkSeasonDivisionRepositoryImpl extends ResourceRepositoryBase<Crn
 	public void delete(String id) {
 		LOG.debug("*********************** CrnkSeasonDivisionRepositoryImpl.delete");
 
-		Integer seasonId = SourceIdParser.parseSeasonId(id);
-		String divisionId = SourceIdParser.parseDivisionId(id);
+		Integer seasonId = SourceIdUtils.parseSeasonId(id);
+		String divisionId = SourceIdUtils.parseDivisionId(id);
 
 		Season existingSeason = seasonRepository.findOne(seasonId);
 		if (existingSeason == null) {

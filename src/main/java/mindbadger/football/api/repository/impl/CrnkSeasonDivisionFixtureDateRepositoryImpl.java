@@ -2,16 +2,12 @@ package mindbadger.football.api.repository.impl;
 
 import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
-import mindbadger.football.api.model.CrnkSeasonDivision;
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
-import mindbadger.football.api.model.CrnkSeasonDivisionTeam;
 import mindbadger.football.api.repository.CrnkSeasonDivisionFixtureDateRepository;
-import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import mindbadger.football.api.util.DateFormat;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
-import mindbadger.football.domain.SeasonDivisionTeam;
 import mindbadger.football.repository.FixtureRepository;
 import mindbadger.football.repository.SeasonRepository;
 import org.apache.log4j.Logger;
@@ -21,7 +17,6 @@ import org.springframework.stereotype.Component;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,11 +79,11 @@ public class CrnkSeasonDivisionFixtureDateRepositoryImpl extends ResourceReposit
 	public CrnkSeasonDivisionFixtureDate findOne(String id, QuerySpec querySpec) {
 		LOG.info("findOne CrnkSeasonDivisionFixtureDate : id = " + id);
 
-		String seasonDivisionFixtureDateString = SourceIdParser.parseFixtureDate(id);
+		String seasonDivisionFixtureDateString = SourceIdUtils.parseFixtureDate(id);
 
-		Integer seasonNumber = SourceIdParser.parseSeasonId(id);
-		String divisionId = SourceIdParser.parseDivisionId(id);
-		String seasonDivisionId = SourceIdParser.parseSeasonDivisionId(id);
+		Integer seasonNumber = SourceIdUtils.parseSeasonId(id);
+		String divisionId = SourceIdUtils.parseDivisionId(id);
+		String seasonDivisionId = SourceIdUtils.parseSeasonDivisionId(id);
 
 		LOG.info("seasonDivision ID = " + seasonDivisionId);
 		LOG.info("fixtureDate string = " + seasonDivisionFixtureDateString);

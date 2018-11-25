@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.crnk.core.resource.annotations.JsonApiId;
 import io.crnk.core.resource.annotations.JsonApiResource;
 import io.crnk.core.resource.annotations.JsonApiToMany;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
 import org.apache.log4j.Logger;
@@ -28,7 +29,11 @@ public class CrnkSeasonDivisionFixtureDate {
 		}
 		this.fixtureDate = fixtureDate;
 		this.seasonDivision = seasonDivision;
-		this.id = seasonDivision.getSeason().getSeasonNumber() + "-" + seasonDivision.getDivision().getDivisionId() + "_" + fixtureDate;
+		this.id = SourceIdUtils.createFixtureDateId(
+				seasonDivision.getSeason().getSeasonNumber(),
+				seasonDivision.getDivision().getDivisionId(),
+				fixtureDate
+		);
 	}
 
 	@JsonProperty("fixtureDate")

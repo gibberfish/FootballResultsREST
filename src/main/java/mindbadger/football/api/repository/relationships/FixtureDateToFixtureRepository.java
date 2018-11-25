@@ -7,7 +7,7 @@ import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
 import mindbadger.football.api.repository.CrnkFixtureRepository;
 import mindbadger.football.api.util.DateFormat;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,8 +35,8 @@ public class FixtureDateToFixtureRepository extends RelationshipRepositoryBase<C
         System.out.println("sourceId = " + sourceId);
         System.out.println("fieldName = " + fieldName);
 
-        String seasonDivisionId = SourceIdParser.parseSeasonDivisionId(sourceId);
-        String fixtureDateParam = SourceIdParser.parseFixtureDate(sourceId);
+        String seasonDivisionId = SourceIdUtils.parseSeasonDivisionId(sourceId);
+        String fixtureDateParam = SourceIdUtils.parseFixtureDate(sourceId);
 
         Calendar cal = DateFormat.toCalendar(fixtureDateParam);
         return fixtureRepository.findFixturesBySeasonDivisionAndDate(seasonDivisionId, cal, querySpec);

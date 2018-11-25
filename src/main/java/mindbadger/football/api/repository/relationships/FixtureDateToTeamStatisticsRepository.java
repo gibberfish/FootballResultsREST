@@ -5,10 +5,9 @@ import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkSeasonDivisionFixtureDate;
 import mindbadger.football.api.model.CrnkTeamStatistics;
-import mindbadger.football.api.repository.CrnkSeasonDivisionRepository;
 import mindbadger.football.api.repository.CrnkTeamStatisticsRepository;
 import mindbadger.football.api.util.DateFormat;
-import mindbadger.football.api.util.SourceIdParser;
+import mindbadger.football.api.util.SourceIdUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,8 +38,8 @@ public class FixtureDateToTeamStatisticsRepository extends RelationshipRepositor
         LOG.info("sourceId = " + sourceId);
         LOG.info("fieldName = " + fieldName);
 
-        String seasonDivisionId = SourceIdParser.parseSeasonDivisionId(sourceId);
-        String fixtureDateParam = SourceIdParser.parseFixtureDate(sourceId);
+        String seasonDivisionId = SourceIdUtils.parseSeasonDivisionId(sourceId);
+        String fixtureDateParam = SourceIdUtils.parseFixtureDate(sourceId);
 
         Calendar cal = DateFormat.toCalendar(fixtureDateParam);
 

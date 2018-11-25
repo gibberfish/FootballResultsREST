@@ -4,8 +4,6 @@ import mindbadger.football.api.model.*;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.repository.CrnkTeamRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
-import mindbadger.football.api.util.DateFormat;
-import mindbadger.football.api.util.SourceIdParser;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.domain.SeasonDivisionTeam;
 import mindbadger.football.repository.SeasonRepository;
@@ -18,7 +16,6 @@ import io.crnk.core.repository.RelationshipRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Component

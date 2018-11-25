@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.crnk.core.resource.annotations.*;
 import mindbadger.configuration.ApplicationContextProvider;
+import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.*;
 import mindbadger.football.repository.DivisionRepository;
 import mindbadger.football.repository.SeasonRepository;
@@ -126,9 +127,11 @@ public class CrnkSeasonDivisionTeam {
     }
 
     private void createId() {
-        this.id = seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getSeason() == null ? "-" : seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber() + "-";
-        this.id += seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getDivision() == null ? "-" : seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId() + "-";
-        this.id += seasonDivisionTeam.getTeam() == null ? "" : seasonDivisionTeam.getTeam().getTeamId();
+        this.id = SourceIdUtils.createSeasonDivisionTeamId(
+                seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getSeason() == null ? null : seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber(),
+                seasonDivisionTeam.getSeasonDivision() == null || seasonDivisionTeam.getSeasonDivision().getDivision() == null ? null : seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId(),
+                seasonDivisionTeam.getTeam() == null ? null : seasonDivisionTeam.getTeam().getTeamId()
+        );
         LOG.debug("CrnkSeasonDivisionTeam id now set to : " + this.id);
     }
 

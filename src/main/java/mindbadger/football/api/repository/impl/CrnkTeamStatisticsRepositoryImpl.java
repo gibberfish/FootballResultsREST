@@ -4,11 +4,10 @@ import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
+import io.undertow.util.DateUtils;
 import mindbadger.football.api.NotImplementedException;
-import mindbadger.football.api.model.CrnkDivision;
-import mindbadger.football.api.model.CrnkSeason;
-import mindbadger.football.api.model.CrnkTeam;
-import mindbadger.football.api.model.CrnkTeamStatistics;
+import mindbadger.football.api.model.*;
+import mindbadger.football.api.repository.CrnkSeasonDivisionFixtureDateRepository;
 import mindbadger.football.api.repository.CrnkTeamStatisticsRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.api.util.DateFormat;
@@ -42,6 +41,9 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 	@Autowired
 	private TeamStatisticRepository teamStatisticRepository;
+
+	@Autowired
+	private CrnkSeasonDivisionFixtureDateRepository seasonDivisionFixtureDateRepository;
 
 	@Autowired
 	private DomainObjectFactory domainObjectFactory;
@@ -158,11 +160,16 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 	@Override
 	public <S extends CrnkTeamStatistics> S create(S resource) {
-		throw new UnsupportedOperationException("Team Statistics records are derived from Fixture Dates and cannot be created");
+		throw new NotImplementedException("Team Statistics records are derived from Fixture Dates and cannot be created");
 	}
 
 	private CrnkTeamStatistics getTeamStatistics (String seasonDivisionTeamId,  Calendar fixtureDate) {
 		SeasonDivisionTeam seasonDivisionTeam = seasonUtils.getSeasonDivisionTeamFromCrnkId(seasonDivisionTeamId);
+
+		CrnkSeasonDivisionFixtureDate crnkSeasonDivisionFixtureDate = seasonDivisionFixtureDateRepository.findOne(SourceIdUtils.
+				createFixtureDateId(seasonDivisionTeam.getSeasonDivision().getSeason().getSeasonNumber(),
+						seasonDivisionTeam.getSeasonDivision().getDivision().getDivisionId(),
+						DateFormat.toString(fixtureDate)), new QuerySpec(seasonDivisionTeamId));
 
 		CrnkTeamStatistics crnkTeamStatistics = new CrnkTeamStatistics();
 		crnkTeamStatistics.setSeason(new CrnkSeason(seasonDivisionTeam.getSeasonDivision().getSeason()));

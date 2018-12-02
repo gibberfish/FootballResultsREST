@@ -51,8 +51,9 @@ public class CrnkTeamStatistics {
 		return this.id;
 	}
 
-	public void setId() {
-		throw new IllegalAccessError("Please set only as part of constructor");
+	public void setId(String id) {
+		this.id = id;
+//		throw new IllegalAccessError("Please set only as part of constructor");
 	}
 
 	@JsonProperty("statistics")

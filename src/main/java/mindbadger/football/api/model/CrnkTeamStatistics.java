@@ -11,12 +11,11 @@ import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.DomainObjectFactory;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.domain.SeasonDivisionTeam;
-import mindbadger.football.repository.TeamStatisticRepository;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 @JsonApiResource(type = "teamStatistics")
@@ -26,19 +25,15 @@ public class CrnkTeamStatistics {
 	private SeasonDivisionTeam seasonDivisionTeam;
 	private Calendar fixtureDate;
 
-	private Map<String, Integer> statistics = new HashMap<>();
+	private List<Statistic> statistics = new ArrayList<>();
 
 	private DomainObjectFactory domainObjectFactory;
 
-//	private TeamStatisticRepository teamStatisticRepository;
 	private String id;
 
 	public CrnkTeamStatistics() {
 		this.domainObjectFactory = (DomainObjectFactory)
 				ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");
-
-//		this.teamStatisticRepository = (TeamStatisticRepository)
-//				ApplicationContextProvider.getApplicationContext().getBean("teamStatisticRepository");
 
 		this.seasonDivisionTeam = domainObjectFactory.createSeasonDivisionTeam();
 		ensureSeasonDivisionTeamHasASeasonDivision();
@@ -61,14 +56,14 @@ public class CrnkTeamStatistics {
 	}
 
 	@JsonProperty("statistics")
-	public Map<String, Integer> getStatistics() {
+	public List<Statistic> getStatistics() {
 		return statistics;
 	}
 
-	public void setStatistics(Map<String, Integer> statistics) {
+	public void setStatistics(List<Statistic> statistics) {
 		this.statistics = statistics;
 	}
-	
+
 	@JsonApiToOne(opposite = "seasonDivisions")
 	@JsonProperty("season")
 	public CrnkSeason getSeason() {
@@ -134,6 +129,46 @@ public class CrnkTeamStatistics {
 		if (seasonDivisionTeam.getSeasonDivision() == null) {
 			SeasonDivision seasonDivision = domainObjectFactory.createSeasonDivision();
 			seasonDivisionTeam.setSeasonDivision(seasonDivision);
+		}
+	}
+
+	public void addStatistic (String statistic, Integer value) {
+		this.statistics.add(
+				new Statistic(statistic,value)
+		);
+	}
+
+	public static class Statistic {
+		private String statistic;
+		private Integer value;
+
+		public Statistic () {
+		}
+
+		public Statistic (String statistic, Integer value) {
+			this.statistic = statistic;
+			this.value = value;
+		}
+
+		public String getStatistic() {
+			return statistic;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public void setStatistic(String statistic) {
+			this.statistic = statistic;
+		}
+
+		public void setValue(Integer value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return "STATISTIC:"+statistic+"="+value;
 		}
 	}
 }

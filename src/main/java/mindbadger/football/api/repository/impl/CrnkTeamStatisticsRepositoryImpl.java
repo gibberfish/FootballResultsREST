@@ -23,9 +23,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<CrnkTeamStatistics, String>
@@ -78,7 +79,11 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 	public ResourceList<CrnkTeamStatistics> findStatisticsBySeasonDivisionAndDate(String seasonDivisionId,
 																				  Calendar fixtureDate,
 																				  QuerySpec querySpec) {
-		LOG.info("******************** findStatisticsBySeasonDivisionAndDate *****************************");
+		LOG.debug("******************************************");
+		LOG.debug("  FIND StatisticsBySeasonDivisionAndDate");
+		LOG.debug("     ssnDivId=" + seasonDivisionId);
+		LOG.debug("     fixtDate=" + fixtureDate);
+		LOG.debug("******************************************");
 
 		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(seasonDivisionId);
 
@@ -91,9 +96,7 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 			List<TeamStatistic> teamStatistics = teamStatisticRepository.findTeamStatisticsForSeasonDivisionTeamOnDate(seasonDivisionTeam, fixtureDate);
 
-			for (TeamStatistic teamStatistic : teamStatistics) {
-				crnkTeamStatistics.getStatistics().put(teamStatistic.getStatistic(), teamStatistic.getValue());
-			}
+			addTeamStatisticsToCrnkTeamStatistics (teamStatistics, crnkTeamStatistics);
 
 			list.add(crnkTeamStatistics);
 		}
@@ -116,16 +119,14 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 		delete(teamStatistics.getId());
 
-		resource.getStatistics().forEach((k,v) -> {
-
-			LOG.debug("    " + k + " = " + v);
+		resource.getStatistics().forEach((statistic) -> {
+			LOG.debug("    " + statistic);
 
 			TeamStatistic teamStatistic =
 					domainObjectFactory.createTeamStatistic(
-							resource.getSeasonDivisionTeam(), resource.getFixtureDate(), k);
-			teamStatistic.setValue(v);
-
-
+							resource.getSeasonDivisionTeam(), resource.getFixtureDate(),
+							statistic.getStatistic());
+			teamStatistic.setValue(statistic.getValue());
 			teamStatisticRepository.save(teamStatistic);
 		});
 
@@ -134,17 +135,23 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 	@Override
 	public void delete(String id) {
+		LOG.debug("******************************************");
+		LOG.debug("  DELETE Team Statistics");
+		LOG.debug("     id=" + id);
+		LOG.debug("******************************************");
+
 		String seasonDivisionTeamId = SourceIdUtils.parseSeasonDivisionTeamId(id);
 		Calendar fixtureDate = DateFormat.toCalendar(SourceIdUtils.parseFixtureDate(id));
 
 		CrnkTeamStatistics crnkTeamStatistics = getTeamStatistics(seasonDivisionTeamId, fixtureDate);
 
-		Map<String, Integer> statistics = crnkTeamStatistics.getStatistics();
+		List<CrnkTeamStatistics.Statistic> statistics = crnkTeamStatistics.getStatistics();
 
-		statistics.forEach((k,v) -> {
+		statistics.forEach((statistic) -> {
 			TeamStatistic teamStatistic = domainObjectFactory.createTeamStatistic(
-					crnkTeamStatistics.getSeasonDivisionTeam(), crnkTeamStatistics.getFixtureDate(), k);
-			teamStatistic.setValue(v);
+					crnkTeamStatistics.getSeasonDivisionTeam(), crnkTeamStatistics.getFixtureDate(),
+					statistic.getStatistic());
+			teamStatistic.setValue(statistic.getValue());
 			teamStatisticRepository.delete(teamStatistic);
 		});
 	}
@@ -166,11 +173,15 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 		List<TeamStatistic> teamStatistics = teamStatisticRepository.
 				findTeamStatisticsForSeasonDivisionTeamOnDate(seasonDivisionTeam, fixtureDate);
 
-		for (TeamStatistic teamStatistic : teamStatistics) {
-			crnkTeamStatistics.getStatistics().put(teamStatistic.getStatistic(), teamStatistic.getValue());
-		}
+		addTeamStatisticsToCrnkTeamStatistics (teamStatistics, crnkTeamStatistics);
 
 		return crnkTeamStatistics;
 	}
 
+	private void addTeamStatisticsToCrnkTeamStatistics (List<TeamStatistic> teamStatistics,
+														CrnkTeamStatistics crnkTeamStatistics) {
+		for (TeamStatistic teamStatistic : teamStatistics) {
+			crnkTeamStatistics.addStatistic(teamStatistic.getStatistic(), teamStatistic.getValue());
+		}
+	}
 }

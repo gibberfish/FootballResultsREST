@@ -26,8 +26,6 @@ public class CrnkSeasonDivisionTeam {
     private String id;
 
     public CrnkSeasonDivisionTeam () {
-        //LOG.debug("*********************** Create new CrnkSeasonDivisionTeam - empty constructor");
-
         this.domainObjectFactory = (DomainObjectFactory)
                 ApplicationContextProvider.getApplicationContext().getBean("domainObjectFactory");
 
@@ -50,7 +48,6 @@ public class CrnkSeasonDivisionTeam {
         createId ();
     }
     @JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
-//    @JsonApiToOne(opposite = "seasonDivisions")
     public CrnkSeasonDivision getSeasonDivision() {
         //LOG.debug("*********************** CrnkSeasonDivisionTeam.getSeasonDivision");
         return new CrnkSeasonDivision(seasonDivisionTeam.getSeasonDivision());
@@ -62,7 +59,6 @@ public class CrnkSeasonDivisionTeam {
     }
 
     @JsonApiRelation(lookUp= LookupIncludeBehavior.AUTOMATICALLY_WHEN_NULL,serialize= SerializeType.ONLY_ID)
-//    @JsonApiToOne(opposite = "seasonDivisions")
     public CrnkTeam getTeam() {
         //LOG.debug("*********************** CrnkSeasonDivisionTeam.getTeam");
         return new CrnkTeam(seasonDivisionTeam.getTeam()); }

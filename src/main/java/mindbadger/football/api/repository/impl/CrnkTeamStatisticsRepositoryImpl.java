@@ -1,11 +1,19 @@
 package mindbadger.football.api.repository.impl;
 
+import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
+import mindbadger.football.api.NotImplementedException;
+import mindbadger.football.api.model.CrnkDivision;
+import mindbadger.football.api.model.CrnkSeason;
+import mindbadger.football.api.model.CrnkTeam;
 import mindbadger.football.api.model.CrnkTeamStatistics;
 import mindbadger.football.api.repository.CrnkTeamStatisticsRepository;
 import mindbadger.football.api.repository.utils.SeasonUtils;
+import mindbadger.football.api.util.DateFormat;
+import mindbadger.football.api.util.SourceIdUtils;
+import mindbadger.football.domain.DomainObjectFactory;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.domain.SeasonDivisionTeam;
 import mindbadger.football.domain.TeamStatistic;
@@ -15,10 +23,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.*;
 
 @Component
 public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<CrnkTeamStatistics, String>
@@ -35,28 +42,42 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 	@Autowired
 	private TeamStatisticRepository teamStatisticRepository;
 
+	@Autowired
+	private DomainObjectFactory domainObjectFactory;
+
 	protected CrnkTeamStatisticsRepositoryImpl() {
 		super(CrnkTeamStatistics.class);
 	}
 
 	@Override
 	public synchronized ResourceList<CrnkTeamStatistics> findAll(QuerySpec querySpec) {
-		throw new RuntimeException();
+		throw new NotImplementedException("FindAll for Team Statistics not implemented");
 	}
 
 	@Override
 	public ResourceList<CrnkTeamStatistics> findAll(Iterable<String> ids, QuerySpec querySpec) {
-		throw new RuntimeException();
-	}
+		throw new NotImplementedException("FindAll for Team Statistics with id not implemented");	}
 
 	@Override
 	public CrnkTeamStatistics findOne(String id, QuerySpec querySpec) {
-		System.out.println("CrnkTeamStatisticsRepositoryImpl.findOne, id = " + id);
-		throw new RuntimeException();
+		LOG.debug("******************************************");
+		LOG.debug("  FIND ONE Team Statistics");
+		LOG.debug("     id=" + id);
+		LOG.debug("******************************************");
+
+		CrnkTeamStatistics teamStatistics = getTeamStatistics(SourceIdUtils.parseSeasonDivisionTeamId(id),
+				DateFormat.toCalendar(SourceIdUtils.parseFixtureDate(id)));
+
+		if (teamStatistics == null) {
+			throw new ResourceNotFoundException("No matching Team Statistics found");
+		}
+		return teamStatistics;
 	}
 
 	@Override
-	public ResourceList<CrnkTeamStatistics> findStatisticsBySeasonDivisionAndDate(String seasonDivisionId, Calendar cal, QuerySpec querySpec) {
+	public ResourceList<CrnkTeamStatistics> findStatisticsBySeasonDivisionAndDate(String seasonDivisionId,
+																				  Calendar fixtureDate,
+																				  QuerySpec querySpec) {
 		LOG.info("******************** findStatisticsBySeasonDivisionAndDate *****************************");
 
 		SeasonDivision seasonDivision = seasonUtils.getSeasonDivisionFromCrnkId(seasonDivisionId);
@@ -66,9 +87,9 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 		List<CrnkTeamStatistics> list = new ArrayList<>();
 		for (SeasonDivisionTeam seasonDivisionTeam : seasonDivisionTeams) {
-			CrnkTeamStatistics crnkTeamStatistics = new CrnkTeamStatistics (seasonDivisionTeam, cal);
+			CrnkTeamStatistics crnkTeamStatistics = new CrnkTeamStatistics (seasonDivisionTeam, fixtureDate);
 
-			List<TeamStatistic> teamStatistics = teamStatisticRepository.findTeamStatisticsForSeasonDivisionTeamOnDate(seasonDivisionTeam, cal);
+			List<TeamStatistic> teamStatistics = teamStatisticRepository.findTeamStatisticsForSeasonDivisionTeamOnDate(seasonDivisionTeam, fixtureDate);
 
 			for (TeamStatistic teamStatistic : teamStatistics) {
 				crnkTeamStatistics.getStatistics().put(teamStatistic.getStatistic(), teamStatistic.getValue());
@@ -82,12 +103,74 @@ public class CrnkTeamStatisticsRepositoryImpl extends ResourceRepositoryBase<Crn
 
 	@Override
 	public <S extends CrnkTeamStatistics> S save(S resource) {
-		LOG.info("******************************** NEED TO DO SOME CLEVER STUFF HERE TO SAVE MULTIPLE STATS ROWS **************************");
-		return super.save(resource);
+		LOG.debug("******************************************");
+		LOG.debug("  SAVE Team Statistics");
+		LOG.debug("     id=" + resource.getId());
+		LOG.debug("     statistics count=" + resource.getStatistics().size());
+		LOG.debug("******************************************");
+
+		String seasonDivisionTeamId = SourceIdUtils.createSeasonDivisionTeamId(resource.getSeason().getSeasonNumber(),
+				resource.getDivision().getId(), resource.getTeam().getId());
+
+		CrnkTeamStatistics teamStatistics = getTeamStatistics (seasonDivisionTeamId, resource.getFixtureDate());
+
+		delete(teamStatistics.getId());
+
+		resource.getStatistics().forEach((k,v) -> {
+
+			LOG.debug("    " + k + " = " + v);
+
+			TeamStatistic teamStatistic =
+					domainObjectFactory.createTeamStatistic(
+							resource.getSeasonDivisionTeam(), resource.getFixtureDate(), k);
+			teamStatistic.setValue(v);
+
+
+			teamStatisticRepository.save(teamStatistic);
+		});
+
+		return resource;
+	}
+
+	@Override
+	public void delete(String id) {
+		String seasonDivisionTeamId = SourceIdUtils.parseSeasonDivisionTeamId(id);
+		Calendar fixtureDate = DateFormat.toCalendar(SourceIdUtils.parseFixtureDate(id));
+
+		CrnkTeamStatistics crnkTeamStatistics = getTeamStatistics(seasonDivisionTeamId, fixtureDate);
+
+		Map<String, Integer> statistics = crnkTeamStatistics.getStatistics();
+
+		statistics.forEach((k,v) -> {
+			TeamStatistic teamStatistic = domainObjectFactory.createTeamStatistic(
+					crnkTeamStatistics.getSeasonDivisionTeam(), crnkTeamStatistics.getFixtureDate(), k);
+			teamStatistic.setValue(v);
+			teamStatisticRepository.delete(teamStatistic);
+		});
 	}
 
 	@Override
 	public <S extends CrnkTeamStatistics> S create(S resource) {
 		throw new UnsupportedOperationException("Team Statistics records are derived from Fixture Dates and cannot be created");
 	}
+
+	private CrnkTeamStatistics getTeamStatistics (String seasonDivisionTeamId,  Calendar fixtureDate) {
+		SeasonDivisionTeam seasonDivisionTeam = seasonUtils.getSeasonDivisionTeamFromCrnkId(seasonDivisionTeamId);
+
+		CrnkTeamStatistics crnkTeamStatistics = new CrnkTeamStatistics();
+		crnkTeamStatistics.setSeason(new CrnkSeason(seasonDivisionTeam.getSeasonDivision().getSeason()));
+		crnkTeamStatistics.setDivision(new CrnkDivision(seasonDivisionTeam.getSeasonDivision().getDivision()));
+		crnkTeamStatistics.setTeam(new CrnkTeam(seasonDivisionTeam.getTeam()));
+		crnkTeamStatistics.setFixtureDate(fixtureDate);
+
+		List<TeamStatistic> teamStatistics = teamStatisticRepository.
+				findTeamStatisticsForSeasonDivisionTeamOnDate(seasonDivisionTeam, fixtureDate);
+
+		for (TeamStatistic teamStatistic : teamStatistics) {
+			crnkTeamStatistics.getStatistics().put(teamStatistic.getStatistic(), teamStatistic.getValue());
+		}
+
+		return crnkTeamStatistics;
+	}
+
 }

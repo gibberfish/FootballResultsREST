@@ -1,5 +1,7 @@
 package mindbadger.football.api.util;
 
+import org.apache.log4j.Logger;
+
 /*
     IDs for everything but Fixture are formed in the following pattern:
         <season>_<div>_<team>_<fixture date>
@@ -7,6 +9,7 @@ package mindbadger.football.api.util;
 */
 //TODO Needs a Unit test
 public class SourceIdUtils {
+    static private Logger LOG = Logger.getLogger (SourceIdUtils.class);
 
     private static final String SEPARATOR = "_";
 
@@ -24,7 +27,9 @@ public class SourceIdUtils {
 
     public static String createTeamStatisticsId (Integer seasonNumber, String divisionId, String teamId,
                                                  String fixtureDate) {
-        return createSeasonDivisionTeamId(seasonNumber, divisionId, teamId) + SEPARATOR + fixtureDate;
+        String id = createSeasonDivisionTeamId(seasonNumber, divisionId, teamId) + SEPARATOR + fixtureDate;
+        LOG.debug("Creating TeamStatisticId : " + id);
+        return id;
     }
 
     public static Integer parseSeasonId (String sourceId) {
@@ -52,4 +57,8 @@ public class SourceIdUtils {
         return idSplit[0] + SEPARATOR + idSplit[1];
     }
 
+    public static String parseSeasonDivisionTeamId (String sourceId) {
+        String[] idSplit = sourceId.split(SEPARATOR);
+        return idSplit[0] + SEPARATOR + idSplit[1] + SEPARATOR + idSplit[2];
+    }
 }

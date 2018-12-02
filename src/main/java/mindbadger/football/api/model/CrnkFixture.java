@@ -1,13 +1,7 @@
 package mindbadger.football.api.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.crnk.core.resource.annotations.*;
 import mindbadger.configuration.ApplicationContextProvider;
 import mindbadger.football.api.util.DateFormat;
@@ -17,6 +11,9 @@ import mindbadger.football.repository.FixtureRepository;
 import mindbadger.football.repository.SeasonRepository;
 import mindbadger.football.repository.TeamRepository;
 import org.apache.log4j.Logger;
+
+import java.text.ParseException;
+import java.util.Calendar;
 
 @JsonApiResource(type = "fixtures")
 public class CrnkFixture {

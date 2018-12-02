@@ -5,6 +5,7 @@ import mindbadger.football.api.repository.relationships.SeasonDivisionToFixtureD
 import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Season;
 import mindbadger.football.domain.SeasonDivision;
+import mindbadger.football.domain.SeasonDivisionTeam;
 import mindbadger.football.repository.SeasonRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,27 @@ public class SeasonUtils {
 
         throw new ResourceNotFoundException("No Season Division found for id");
     }
+
+    public SeasonDivisionTeam getSeasonDivisionTeamFromCrnkId (String sourceId) {
+        LOG.info("SeasonUtils.getSeasonDivisionTeamFromCrnkId : id = " + sourceId);
+
+        Integer seasonNumber = SourceIdUtils.parseSeasonId(sourceId);
+        String divisionId = SourceIdUtils.parseDivisionId(sourceId);
+        String teamId = SourceIdUtils.parseTeamId(sourceId);
+
+        Season existingSeason = seasonRepository.findOne(seasonNumber);
+
+        for (SeasonDivision seasonDivision : existingSeason.getSeasonDivisions()) {
+            if (divisionId.equals(seasonDivision.getDivision().getDivisionId())) {
+                for (SeasonDivisionTeam seasonDivisionTeam : seasonDivision.getSeasonDivisionTeams()) {
+                    if (teamId.equals(seasonDivisionTeam.getTeam().getTeamId())) {
+                        return seasonDivisionTeam;
+                    }
+                }
+            }
+        }
+
+        throw new ResourceNotFoundException("No Season Division Team found for id");
+    }
+
 }

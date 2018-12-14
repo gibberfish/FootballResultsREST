@@ -4,7 +4,6 @@ import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
-import io.undertow.util.DateUtils;
 import mindbadger.football.api.NotImplementedException;
 import mindbadger.football.api.model.*;
 import mindbadger.football.api.repository.CrnkSeasonDivisionFixtureDateRepository;

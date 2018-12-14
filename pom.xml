@@ -237,5 +237,21 @@
             <url>https://repo.spring.io/libs-release</url>
         </pluginRepository>
     </pluginRepositories>
-
+	<profiles>
+		<profile>
+			<id>test</id>
+			<properties>
+				<spring.datasource.url>jdbc:mysql://172.17.0.2/football_test</spring.datasource.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>live</id>
+			<properties>
+				<spring.datasource.url>jdbc:mysql://172.17.0.2/football</spring.datasource.url>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
 </project>

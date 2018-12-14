@@ -8,7 +8,6 @@ import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.model.CrnkDivisionMapping;
 import mindbadger.football.api.repository.CrnkDivisionMappingRepository;
 import mindbadger.football.domain.DivisionMapping;
-import mindbadger.football.domain.DivisionMappingImpl;
 import mindbadger.football.domain.MappingId;
 import mindbadger.football.repository.DivisionMappingRepository;
 import org.apache.log4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component

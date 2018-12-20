@@ -8,10 +8,10 @@
         <version>1.4.3.RELEASE</version>
     </parent>
     <groupId>themindbadger</groupId>
-    <artifactId>football-results-rest</artifactId>
+    <artifactId>football-results-data-api</artifactId>
     <packaging>jar</packaging>
     <version>0.1.0</version>
-	<name>football-results-rest</name>
+	<name>football-results-data-api</name>
     <properties>
     	<main.basedir>${basedir}/../..</main.basedir>
         <java.version>1.8</java.version>

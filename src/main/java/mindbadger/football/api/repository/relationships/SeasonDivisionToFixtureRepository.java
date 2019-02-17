@@ -54,10 +54,10 @@ public class SeasonDivisionToFixtureRepository extends RelationshipRepositoryBas
     	return querySpec.apply(crnkFixtures);
     }
 
-    @Override
-    protected CrnkFixture getTarget(String targetId) {
-        return super.getTarget(targetId);
-    }
+//    @Override
+//    protected CrnkFixture getTarget(String targetId) {
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkFixture> getTargets(Iterable<String> targetIds) {

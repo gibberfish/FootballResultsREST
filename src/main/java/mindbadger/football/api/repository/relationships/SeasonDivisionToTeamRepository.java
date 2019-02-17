@@ -55,10 +55,10 @@ public class SeasonDivisionToTeamRepository extends RelationshipRepositoryBase<C
         return querySpec.apply(crnkSeasonDivisionTeams);
     }
 
-    @Override
-    protected CrnkSeasonDivisionTeam getTarget(String targetId) {
-        return super.getTarget(targetId);
-    }
+//    @Override
+//    protected CrnkSeasonDivisionTeam getTarget(String targetId) {
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkSeasonDivisionTeam> getTargets(Iterable<String> targetIds) {

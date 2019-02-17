@@ -40,11 +40,11 @@ public class SeasonToSeasonDivisionRepository extends RelationshipRepositoryBase
         return querySpec.apply(seasonDivisions);
     }
 
-    @Override
-    protected CrnkSeasonDivision getTarget(String targetId) {
-        LOG.debug("*********************** SeasonToSeasonDivisionRepository.getTarget");
-        return super.getTarget(targetId);
-    }
+//    @Override
+//    protected CrnkSeasonDivision getTarget(String targetId) {
+//        LOG.debug("*********************** SeasonToSeasonDivisionRepository.getTarget");
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkSeasonDivision> getTargets(Iterable<String> targetIds) {

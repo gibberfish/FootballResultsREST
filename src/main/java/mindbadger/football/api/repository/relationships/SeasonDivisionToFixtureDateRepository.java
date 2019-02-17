@@ -62,10 +62,10 @@ public class SeasonDivisionToFixtureDateRepository extends RelationshipRepositor
     	return querySpec.apply(crnkSeasonDivisionFixtureDates);
     }
 
-    @Override
-    protected CrnkSeasonDivisionFixtureDate getTarget(String targetId) {
-        return super.getTarget(targetId);
-    }
+//    @Override
+//    protected CrnkSeasonDivisionFixtureDate getTarget(String targetId) {
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkSeasonDivisionFixtureDate> getTargets(Iterable<String> targetIds) {

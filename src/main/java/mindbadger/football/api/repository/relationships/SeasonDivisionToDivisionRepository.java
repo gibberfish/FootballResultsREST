@@ -38,10 +38,10 @@ public class SeasonDivisionToDivisionRepository extends RelationshipRepositoryBa
     	return querySpec.apply((Iterable<CrnkDivision>) division);
     }
     
-    @Override
-    protected CrnkDivision getTarget(String targetId) {
-        return super.getTarget(targetId);
-    }
+//    @Override
+//    protected CrnkDivision getTarget(String targetId) {
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkDivision> getTargets(Iterable<String> targetIds) {

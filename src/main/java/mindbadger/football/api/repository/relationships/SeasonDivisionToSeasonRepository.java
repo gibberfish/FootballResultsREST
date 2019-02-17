@@ -1,5 +1,6 @@
 package mindbadger.football.api.repository.relationships;
 
+import io.crnk.core.engine.registry.RegistryEntry;
 import mindbadger.football.api.repository.CrnkSeasonRepository;
 import mindbadger.football.api.util.SourceIdUtils;
 import mindbadger.football.domain.Season;
@@ -37,11 +38,16 @@ public class SeasonDivisionToSeasonRepository extends RelationshipRepositoryBase
     	CrnkSeason season = findOneTarget(sourceId, fieldName, querySpec);
     	return querySpec.apply((Iterable<CrnkSeason>) season);
     }
-    
+
     @Override
-    protected CrnkSeason getTarget(Integer targetId) {
-        return super.getTarget(targetId);
+    protected CrnkSeason getTarget(RegistryEntry entry, Integer targetId) {
+        return super.getTarget(entry, targetId);
     }
+
+    //    @Override
+//    protected CrnkSeason getTarget(Integer targetId) {
+//        return super.getTarget(targetId);
+//    }
 
     @Override
     protected Iterable<CrnkSeason> getTargets(Iterable<Integer> targetIds) {

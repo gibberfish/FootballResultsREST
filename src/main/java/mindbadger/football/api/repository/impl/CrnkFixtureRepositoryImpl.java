@@ -15,7 +15,6 @@ import mindbadger.football.api.repository.utils.SeasonUtils;
 import mindbadger.football.domain.Fixture;
 import mindbadger.football.domain.SeasonDivision;
 import mindbadger.football.repository.FixtureRepository;
-import mindbadger.football.repository.SeasonRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,9 +32,6 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 	private FixtureRepository fixtureRepository;
 
 	@Autowired
-	private SeasonRepository seasonRepository;
-
-	@Autowired
 	private SeasonUtils seasonUtils;
 	
 	protected CrnkFixtureRepositoryImpl() {
@@ -48,27 +44,29 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 		LOG.debug("  FIND ALL Fixture");
 		LOG.debug("******************************************");
 
-		throw new NotImplementedException("FindAll for Fixtures not implemented");
-//		List<CrnkFixture> katharsisFixtures = new ArrayList<>();
-//
-//		for (FilterSpec filter : querySpec.getFilters()) {
-//			LOG.debug("   filter: " + filter);
-//			LOG.debug("      expression: " + filter.getExpression());
-//			LOG.debug("      operator  : " + filter.getOperator());
-//			LOG.debug("      value     : " + filter.getValue());
-//			LOG.debug("      attribute : " + filter.getAttributePath().get(0));
-//
-//			String value = filter.getValue().toString();
-//			value = value.replace("[", "");
-//			value = value.replace("]", "");
-//
-//			if (filter.getAttributePath().size() > 0 && "id".equals(filter.getAttributePath().get(0))) {
-//				LOG.debug("  findAll filtering on id.");
-//				//katharsisSeasonDivisionTeams.add(findOne(value, querySpec));
-//			}
+		List<String> attributesSupplied = new ArrayList<>();
+
+		for (FilterSpec filterSpec : querySpec.getFilters()) {
+			for (String path : filterSpec.getAttributePath()) {
+				attributesSupplied.add(path);
+			}
+		}
+
+		Iterable<Fixture> fixtures = null;
+
+		//TODO Call optimised queries for certain combinations of filters
+//		if (attributesSupplied.contains("seasonNumber") && ) {
+//			fixtureRepository
 //		}
-//
-//		return querySpec.apply(katharsisFixtures);
+
+		fixtures = fixtureRepository.findAll();
+
+		List<CrnkFixture> katharsisFixtures = new ArrayList<CrnkFixture>();
+		for (Fixture fixture : fixtures) {
+			katharsisFixtures.add(new CrnkFixture(fixture));
+		}
+
+		return querySpec.apply(katharsisFixtures);
 	}
 
 	@Override

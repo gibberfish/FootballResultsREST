@@ -32,7 +32,7 @@ public class CrnkTrackedDivisionRepositoryImpl extends ResourceRepositoryBase<Cr
 
     @Override
     public ResourceList<CrnkTrackedDivision> findAll(QuerySpec querySpec) {
-        Iterable<TrackedDivision> trackedDivisions = trackedDivisionRepository.findAll();
+        List<? extends TrackedDivision> trackedDivisions = trackedDivisionRepository.findAll();
         List<CrnkTrackedDivision> crnkTrackedDivisions = new ArrayList<>();
         trackedDivisions.forEach((trackedDivision -> {
             crnkTrackedDivisions.add(new CrnkTrackedDivision(trackedDivision));

@@ -30,7 +30,7 @@ public class CrnkTeamRepositoryImpl extends ResourceRepositoryBase<CrnkTeam, Str
 
 	@Override
 	public synchronized ResourceList<CrnkTeam> findAll(QuerySpec querySpec) {
-		Iterable<Team> teams = teamRepository.findAll();
+		List<? extends Team> teams = teamRepository.findAll();
 		
     	List<CrnkTeam> katharsisTeams = new ArrayList<CrnkTeam> ();
     	for (Team team : teams) {

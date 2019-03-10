@@ -32,7 +32,7 @@ public class CrnkTeamMappingRepositoryImpl extends ResourceRepositoryBase<CrnkTe
 
     @Override
     public ResourceList<CrnkTeamMapping> findAll(QuerySpec querySpec) {
-        Iterable<TeamMapping> teamMappings = teamMappingRepository.findAll();
+        List<? extends TeamMapping> teamMappings = teamMappingRepository.findAll();
         List<CrnkTeamMapping> crnkTeamMappings = new ArrayList<>();
         teamMappings.forEach((teamMapping -> {
             crnkTeamMappings.add(new CrnkTeamMapping(teamMapping));

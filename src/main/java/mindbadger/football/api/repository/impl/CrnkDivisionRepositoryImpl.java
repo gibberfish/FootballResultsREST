@@ -29,7 +29,7 @@ public class CrnkDivisionRepositoryImpl extends ResourceRepositoryBase<CrnkDivis
 
 	@Override
 	public synchronized ResourceList<CrnkDivision> findAll(QuerySpec querySpec) {
-		Iterable<Division> divisions = divisionRepository.findAll();
+		List<? extends Division> divisions = divisionRepository.findAll();
 		
     	List<CrnkDivision> katharsisDivisions = new ArrayList<CrnkDivision> ();
     	for (Division division : divisions) {

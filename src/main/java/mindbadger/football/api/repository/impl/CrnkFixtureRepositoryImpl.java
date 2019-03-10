@@ -1,13 +1,11 @@
 package mindbadger.football.api.repository.impl;
 
-import io.crnk.core.exception.BadRequestException;
 import io.crnk.core.exception.ResourceNotFoundException;
 import io.crnk.core.queryspec.FilterSpec;
 import io.crnk.core.queryspec.QuerySpec;
 import io.crnk.core.repository.ResourceRepositoryBase;
 import io.crnk.core.resource.list.ResourceList;
 import mindbadger.football.api.ConflictException;
-import mindbadger.football.api.NotImplementedException;
 import mindbadger.football.api.ValidationException;
 import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.repository.CrnkFixtureRepository;
@@ -59,7 +57,7 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 //			fixtureRepository
 //		}
 
-		fixtures = fixtureRepository.findAll();
+//		fixtures = fixtureRepository.findAll();
 
 		List<CrnkFixture> katharsisFixtures = new ArrayList<CrnkFixture>();
 		for (Fixture fixture : fixtures) {

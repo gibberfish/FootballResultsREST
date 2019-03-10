@@ -40,7 +40,7 @@ public class CrnkSeasonRepositoryImpl extends ResourceRepositoryBase<CrnkSeason,
 	public synchronized ResourceList<CrnkSeason> findAll(QuerySpec querySpec) {
 		LOG.debug("*********************** CrnkSeasonRepositoryImpl.findAll");
 
-		Iterable<Season> seasons = seasonRepository.findAll();
+		List<? extends Season> seasons = seasonRepository.findAll();
 		
     	List<CrnkSeason> katharsisSeasons = new ArrayList<CrnkSeason> ();
     	for (Season season : seasons) {

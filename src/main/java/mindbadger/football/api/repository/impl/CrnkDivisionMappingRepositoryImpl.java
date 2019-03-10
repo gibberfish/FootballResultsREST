@@ -32,7 +32,7 @@ public class CrnkDivisionMappingRepositoryImpl extends ResourceRepositoryBase<Cr
 
     @Override
     public ResourceList<CrnkDivisionMapping> findAll(QuerySpec querySpec) {
-        Iterable<DivisionMapping> divisionMappings = divisionMappingRepository.findAll();
+        List<? extends DivisionMapping> divisionMappings = divisionMappingRepository.findAll();
         List<CrnkDivisionMapping> crnkDivisionMappings = new ArrayList<>();
         divisionMappings.forEach((divisionMapping -> {
             crnkDivisionMappings.add(new CrnkDivisionMapping(divisionMapping));

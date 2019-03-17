@@ -67,7 +67,7 @@ public class CrnkFixture {
 
 	@JsonProperty("seasonNumber")
 	public Integer getSeasonNumber () {
-		if (fixture==null) return null;
+		if (fixture==null || fixture.getSeasonDivision()==null || fixture.getSeasonDivision().getSeason() == null) return null;
 		return fixture.getSeasonDivision().getSeason().getSeasonNumber();
 	}
 	public void setSeasonNumber (Integer seasonNumber) {

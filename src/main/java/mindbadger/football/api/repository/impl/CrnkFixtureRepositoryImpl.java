@@ -50,14 +50,13 @@ public class CrnkFixtureRepositoryImpl extends ResourceRepositoryBase<CrnkFixtur
 			}
 		}
 
-		Iterable<Fixture> fixtures = null;
 
 		//TODO Call optimised queries for certain combinations of filters
 //		if (attributesSupplied.contains("seasonNumber") && ) {
 //			fixtureRepository
 //		}
 
-//		fixtures = fixtureRepository.findAll();
+		Iterable<? extends Fixture> fixtures = fixtureRepository.findAll();
 
 		List<CrnkFixture> katharsisFixtures = new ArrayList<CrnkFixture>();
 		for (Fixture fixture : fixtures) {

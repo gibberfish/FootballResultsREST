@@ -1,7 +1,5 @@
 package mindbadger.football.api.bulk;
 
-import com.google.gson.*;
-import mindbadger.football.api.model.CrnkFixture;
 import mindbadger.football.api.util.DateFormat;
 import mindbadger.football.domain.*;
 import mindbadger.football.repository.FixtureRepository;
@@ -9,10 +7,12 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,39 +28,18 @@ public class BulkSaveController {
     private FixtureRepository fixtureRepository;
 
     @PutMapping("/fixtures")
-//    public void saveFixtures (@RequestBody List<CrnkFixture> crnkFixtures) {
-
-    public void saveFixtures (@RequestBody String fixturesJson) {
+    public ResponseEntity<String> saveFixtures (@RequestBody String fixturesJson) {
         logger.info("Bulk Update Fixtures");
         logger.debug(fixturesJson);
         List<Fixture> fixtureList = new ArrayList<>();
 
-
         JSONObject jsonObject = new JSONObject(fixturesJson);
-
-
-//        Gson gson = new Gson();
-//
-//
-//        JsonElement jelement = gson.toJsonTree(fixturesJson);
-//        logger.debug(jelement);
-
-//        logger.debug("Is JSON Array = " + jelement.isJsonArray());
-//        logger.debug("Is JSON Null = " + jelement.isJsonNull());
-//        logger.debug("Is JSON Object = " + jelement.isJsonObject());
-//        logger.debug("Is JSON Primitive" + jelement.isJsonPrimitive());
-//
-//        JsonPrimitive jsonPrimitive = jelement.getAsJsonPrimitive();
-//        jsonPrimitive.
-
-//        JsonObject jsonObject = jelement.getAsJsonObject();
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject rootObject = jsonArray.getJSONObject(i);
 
-//            JsonObject rootObject = element.getAsJsonObject();
             JSONObject attributesObject = rootObject.getJSONObject("attributes");
 
             Integer seasonNumber = attributesObject.getInt("seasonNumber");
@@ -78,16 +57,10 @@ public class BulkSaveController {
             String homeTeamId = attributesObject.getString("homeTeamId");
             Team homeTeam = domainObjectFactory.createTeam();
             homeTeam.setTeamId(homeTeamId);
-//            SeasonDivisionTeam homeSeasonDivisionTeam  = domainObjectFactory.createSeasonDivisionTeam();
-//            homeSeasonDivisionTeam.setSeasonDivision(seasonDivision);
-//            homeSeasonDivisionTeam.setTeam(homeTeam);
 
-            String awayTeamId = attributesObject.getString("homeTeamId");
+            String awayTeamId = attributesObject.getString("awayTeamId");
             Team awayTeam = domainObjectFactory.createTeam();
             awayTeam.setTeamId(awayTeamId);
-//            SeasonDivisionTeam awaySeasonDivisionTeam  = domainObjectFactory.createSeasonDivisionTeam();
-//            awaySeasonDivisionTeam.setSeasonDivision(seasonDivision);
-//            awaySeasonDivisionTeam.setTeam(awayTeam);
 
             Fixture fixture = domainObjectFactory.createFixture();
             fixture.setSeasonDivision(seasonDivision);
@@ -116,13 +89,7 @@ public class BulkSaveController {
         }
 
         fixtureRepository.saveAll(fixtureList);
+
+        return ResponseEntity.ok("Saved " + fixtureList + " fixtures.");
     }
-
-//    @GetMapping(value = "/xxx", produces = "application/json")
-//    public ResponseEntity<String> loadAllFixturesForSeason (@RequestParam(value="season") String season) {
-//        logger.info("TEST!!!");
-//
-//        return new ResponseEntity<>("Initialise Team Complete", HttpStatus.OK);
-//    }
-
 }
